@@ -441,7 +441,66 @@ data:
 
 ---
 
-## 15. http-request (API 요청)
+## 15. knowledge-add (지식 추가)
+
+워크플로우 실행 중 Knowledge Base에 새 내용을 동적으로 추가.
+
+```yaml
+data:
+  type: knowledge-add
+  title: <노드 이름>
+  dataset_id: <Knowledge Base UUID>    # 기존 지식 선택 (없으면 새로 생성)
+  dataset_name: <지식 이름>            # 새 지식 생성 시 이름
+  dataset_description: <설명>          # 새 지식 생성 시 설명
+  text_variable_selector:
+    - <소스노드ID>
+    - <텍스트변수명>                   # 추가할 텍스트 내용
+  content_filename: content.txt        # 저장 파일명 (기본값)
+  append_to_existing: false            # true: 같은 파일명 문서에 이어붙이기
+  file_variable_selector:              # 파일로 추가할 경우 (텍스트 대신)
+    - <소스노드ID>
+    - <파일변수명>
+```
+
+**출력**:
+- `status`: `processing` / `completed` / `skipped`
+- `dataset_id`: 지식 고유 ID
+- `dataset_name`: 지식명
+- `document_ids`: 추가된 문서 ID 목록 (array)
+- `message`: 처리 결과 메시지
+
+---
+
+## 16. knowledge-indexing (인덱싱 상태 확인)
+
+knowledge-add 후 인덱싱 완료 여부를 확인. 루프 노드와 조합해 완료까지 대기 가능.
+
+```yaml
+data:
+  type: knowledge-indexing
+  title: <노드 이름>
+  # 아래 셋 중 하나 이상 지정
+  dataset_id_selector:
+    - <knowledge-add 노드ID>
+    - dataset_id
+  batch_id_selector:              # 같은 시점에 추가된 문서 묶음 ID
+    - <소스노드ID>
+    - <배치ID변수>
+  document_ids_selector:          # 개별 문서 ID 목록
+    - <knowledge-add 노드ID>
+    - document_ids
+```
+
+**출력**:
+- `status`: `completed` / `processing` / `partial` / `error`
+- `json`: 상세 인덱싱 상태 데이터 (array)
+- `text`: 상태 요약 메시지
+
+**⚠️ 사용 패턴**: knowledge-add → code(document_ids 추출) → knowledge-indexing → loop(완료까지 반복)
+
+---
+
+## 17. http-request (API 요청)
 
 외부 HTTP API 호출.
 
