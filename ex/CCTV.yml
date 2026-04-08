@@ -1,0 +1,648 @@
+app:
+  description: 센서 데이터를 실시간으로 수집하여 정상 범위와 비교 분석하고, 이상 징후 발생 시 즉시 웨어러블 기기로 알림을 전송하며,
+    설비 상태와 이상 발생 시점을 자동 기록하여 사고 원인 분석을 지원하는 안전 모니터링 시스템
+  icon: 🤖
+  icon_background: '#7C3AED'
+  memory_config: null
+  mode: workflow
+  name: CCTV
+  use_icon_as_answer_icon: false
+kind: app
+version: 0.1.5
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      image:
+        enabled: false
+      number_limits: 10
+    sensitive_word_avoidance:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        sourceType: start
+        targetType: parameter-extractor
+      id: start-source-param_extract_1-target
+      selected: false
+      source: start
+      sourceHandle: source
+      target: param_extract_1
+      targetHandle: target
+      type: custom
+    - data:
+        sourceType: parameter-extractor
+        targetType: code
+      id: param_extract_1-source-code_1-target
+      selected: false
+      source: param_extract_1
+      sourceHandle: source
+      target: code_1
+      targetHandle: target
+      type: custom
+    - data:
+        sourceType: code
+        targetType: if-else
+      id: code_1-source-if_else_1-target
+      selected: false
+      source: code_1
+      sourceHandle: source
+      target: if_else_1
+      targetHandle: target
+      type: custom
+    - data:
+        sourceType: if-else
+        targetType: template-transform
+      id: if_else_1-anomaly_detected-template_3-target
+      selected: false
+      source: if_else_1
+      sourceHandle: anomaly_detected
+      target: template_3
+      targetHandle: target
+      type: custom
+    - data:
+        sourceType: template-transform
+        targetType: template-transform
+      id: template_3-source-template_4-target
+      selected: false
+      source: template_3
+      sourceHandle: source
+      target: template_4
+      targetHandle: target
+      type: custom
+    - data:
+        sourceType: template-transform
+        targetType: template-transform
+      id: template_4-source-template_anomaly_result-target
+      selected: false
+      source: template_4
+      sourceHandle: source
+      target: template_anomaly_result
+      targetHandle: target
+      type: custom
+    - data:
+        sourceType: template-transform
+        targetType: end
+      id: template_anomaly_result-source-end-target
+      selected: false
+      source: template_anomaly_result
+      sourceHandle: source
+      target: end
+      targetHandle: target
+      type: custom
+    - data:
+        sourceType: if-else
+        targetType: template-transform
+      id: if_else_1-false-template_5-target
+      selected: false
+      source: if_else_1
+      sourceHandle: 'false'
+      target: template_5
+      targetHandle: target
+      type: custom
+    - data:
+        sourceType: template-transform
+        targetType: template-transform
+      id: template_5-source-template_normal_result-target
+      selected: false
+      source: template_5
+      sourceHandle: source
+      target: template_normal_result
+      targetHandle: target
+      type: custom
+    - data:
+        sourceType: template-transform
+        targetType: end
+      id: template_normal_result-source-end-target
+      selected: false
+      source: template_normal_result
+      sourceHandle: source
+      target: end
+      targetHandle: target
+      type: custom
+    nodes:
+    - data:
+        _connectedSourceHandleIds:
+        - source
+        _connectedTargetHandleIds: []
+        _inParallelHovering: false
+        _isEntering: false
+        desc: 실시간 센서 데이터 수집
+        selected: false
+        title: 센서 데이터 입력
+        type: start
+        variables:
+        - description: 모니터링 대상 센서의 고유 식별자
+          label: 센서 ID
+          required: true
+          type: text-input
+          variable: sensor_id
+        - description: 온도, 압력, 진동 등 센서 측정 데이터 (JSON 형식)
+          label: 센서 측정값
+          required: true
+          type: paragraph
+          variable: sensor_data
+        - description: 모니터링 대상 설비 이름
+          label: 설비명
+          required: true
+          type: text-input
+          variable: facility_name
+      id: start
+      position:
+        x: 80
+        y: 282
+      type: custom
+    - data:
+        _connectedSourceHandleIds:
+        - source
+        _connectedTargetHandleIds:
+        - target
+        _inParallelHovering: false
+        _isEntering: false
+        desc: 센서 측정값에서 구조화된 데이터 추출
+        instruction: 센서 데이터에서 온도, 압력, 진동, 측정 시각을 추출하세요. 데이터가 누락된 경우 null을 반환하세요.
+        model:
+          completion_params:
+            max_tokens: 4096
+          mode: chat
+          name: us.anthropic.claude-haiku-4-5-20251001-v1:0
+          provider: bedrock
+        parameters:
+        - description: 온도 측정값 (섭씨)
+          name: temperature
+          required: true
+          type: number
+        - description: 압력 측정값 (bar)
+          name: pressure
+          required: true
+          type: number
+        - description: 진동 측정값 (mm/s)
+          name: vibration
+          required: true
+          type: number
+        - description: 측정 시각 (ISO 8601 형식)
+          name: timestamp
+          required: true
+          type: string
+        query:
+        - start
+        - sensor_data
+        reasoning_mode: function_call
+        selected: false
+        title: 센서 데이터 파싱
+        type: parameter-extractor
+        vision:
+          enabled: false
+      id: param_extract_1
+      position:
+        x: 530
+        y: 282
+      type: custom
+    - data:
+        _connectedSourceHandleIds:
+        - source
+        _connectedTargetHandleIds:
+        - target
+        _inParallelHovering: false
+        _isEntering: false
+        code: "def main(temperature, pressure, vibration, sensor_id, timestamp):\n\
+          \    # 정상 범위 정의\n    NORMAL_RANGES = {\n        'temperature': {'min': 15,\
+          \ 'max': 85},\n        'pressure': {'min': 1.0, 'max': 10.0},\n        'vibration':\
+          \ {'min': 0, 'max': 4.5}\n    }\n    \n    anomalies = []\n    severity\
+          \ = 'normal'\n    \n    # 온도 검사\n    if temperature < NORMAL_RANGES['temperature']['min']:\n\
+          \        anomalies.append(f\"온도 과소: {temperature}°C (정상 범위: {NORMAL_RANGES['temperature']['min']}-{NORMAL_RANGES['temperature']['max']}°C)\"\
+          )\n        severity = 'warning'\n    elif temperature > NORMAL_RANGES['temperature']['max']:\n\
+          \        anomalies.append(f\"온도 과다: {temperature}°C (정상 범위: {NORMAL_RANGES['temperature']['min']}-{NORMAL_RANGES['temperature']['max']}°C)\"\
+          )\n        severity = 'critical'\n    \n    # 압력 검사\n    if pressure < NORMAL_RANGES['pressure']['min']:\n\
+          \        anomalies.append(f\"압력 과소: {pressure} bar (정상 범위: {NORMAL_RANGES['pressure']['min']}-{NORMAL_RANGES['pressure']['max']}\
+          \ bar)\")\n        severity = 'warning' if severity == 'normal' else severity\n\
+          \    elif pressure > NORMAL_RANGES['pressure']['max']:\n        anomalies.append(f\"\
+          압력 과다: {pressure} bar (정상 범위: {NORMAL_RANGES['pressure']['min']}-{NORMAL_RANGES['pressure']['max']}\
+          \ bar)\")\n        severity = 'critical'\n    \n    # 진동 검사\n    if vibration\
+          \ > NORMAL_RANGES['vibration']['max']:\n        anomalies.append(f\"진동 과다:\
+          \ {vibration} mm/s (정상 범위: 0-{NORMAL_RANGES['vibration']['max']} mm/s)\"\
+          )\n        severity = 'critical'\n    \n    # 이상 징후 여부\n    has_anomaly\
+          \ = 'true' if len(anomalies) > 0 else 'false'\n    \n    return {\n    \
+          \    'has_anomaly': has_anomaly,\n        'severity': severity,\n      \
+          \  'anomaly_details': ', '.join(anomalies) if anomalies else '정상 범위 내',\n\
+          \        'analysis_summary': f\"센서 {sensor_id} 분석 완료 ({timestamp}): {len(anomalies)}건의\
+          \ 이상 징후 탐지\"\n    }"
+        code_language: python3
+        desc: 센서 데이터를 정상 범위와 비교하여 이상 징후 탐지
+        outputs:
+          analysis_summary:
+            type: string
+          anomaly_details:
+            type: string
+          has_anomaly:
+            type: string
+          severity:
+            type: string
+        selected: true
+        title: 이상 징후 분석
+        type: code
+        variables:
+        - value_selector:
+          - param_extract_1
+          - temperature
+          variable: temperature
+        - value_selector:
+          - param_extract_1
+          - pressure
+          variable: pressure
+        - value_selector:
+          - param_extract_1
+          - vibration
+          variable: vibration
+        - value_selector:
+          - start
+          - sensor_id
+          variable: sensor_id
+        - value_selector:
+          - param_extract_1
+          - timestamp
+          variable: timestamp
+      id: code_1
+      position:
+        x: 980
+        y: 282
+      type: custom
+    - data:
+        _connectedSourceHandleIds:
+        - anomaly_detected
+        - 'false'
+        _connectedTargetHandleIds:
+        - target
+        _inParallelHovering: false
+        _isEntering: false
+        _targetBranches:
+        - id: anomaly_detected
+          name: IF
+        - id: 'false'
+          name: ELSE
+        cases:
+        - case_id: anomaly_detected
+          conditions:
+          - comparison_operator: is
+            value: 'true'
+            variable_selector:
+            - code_1
+            - has_anomaly
+          logical_operator: and
+        desc: 이상 징후 발생 여부에 따라 알림 전송
+        selected: false
+        title: 이상 징후 확인
+        type: if-else
+      id: if_else_1
+      position:
+        x: 1430
+        y: 282
+      type: custom
+    - data:
+        _connectedSourceHandleIds:
+        - source
+        _connectedTargetHandleIds:
+        - target
+        _inParallelHovering: false
+        _isEntering: false
+        desc: 웨어러블 기기 알림 메시지 포맷팅
+        outputs:
+          output:
+            children: null
+            type: string
+        selected: false
+        template: '⚠️ 안전 경고 [심각도: {{ severity }}]
+
+
+          센서 ID: {{ sensor_id }}
+
+          설비: {{ facility_name }}
+
+          이상 내용: {{ anomaly_details }}
+
+          시간: {{ timestamp }}
+
+
+          즉시 현장 확인이 필요합니다.'
+        title: 알림 메시지 생성
+        type: template-transform
+        variables:
+        - value_selector:
+          - code_1
+          - severity
+          variable: severity
+        - value_selector:
+          - start
+          - sensor_id
+          variable: sensor_id
+        - value_selector:
+          - start
+          - facility_name
+          variable: facility_name
+        - value_selector:
+          - code_1
+          - anomaly_details
+          variable: anomaly_details
+        - value_selector:
+          - param_extract_1
+          - timestamp
+          variable: timestamp
+      id: template_3
+      position:
+        x: 1880
+        y: 282
+      type: custom
+    - data:
+        _connectedSourceHandleIds:
+        - source
+        _connectedTargetHandleIds:
+        - target
+        _inParallelHovering: false
+        _isEntering: false
+        desc: 이상 징후 로그 데이터 포맷팅
+        outputs:
+          output:
+            children: null
+            type: string
+        selected: false
+        template: '[이상 감지 로그]
+
+          센서 ID: {{ sensor_id }}
+
+          설비: {{ facility_name }}
+
+          심각도: {{ severity }}
+
+          온도: {{ temperature }}°C
+
+          압력: {{ pressure }} bar
+
+          진동: {{ vibration }} mm/s
+
+          이상 내용: {{ anomaly_details }}
+
+          시간: {{ timestamp }}'
+        title: 이상 로그 데이터 생성
+        type: template-transform
+        variables:
+        - value_selector:
+          - start
+          - sensor_id
+          variable: sensor_id
+        - value_selector:
+          - start
+          - facility_name
+          variable: facility_name
+        - value_selector:
+          - code_1
+          - severity
+          variable: severity
+        - value_selector:
+          - param_extract_1
+          - temperature
+          variable: temperature
+        - value_selector:
+          - param_extract_1
+          - pressure
+          variable: pressure
+        - value_selector:
+          - param_extract_1
+          - vibration
+          variable: vibration
+        - value_selector:
+          - code_1
+          - anomaly_details
+          variable: anomaly_details
+        - value_selector:
+          - param_extract_1
+          - timestamp
+          variable: timestamp
+      id: template_4
+      position:
+        x: 2330
+        y: 282
+      type: custom
+    - data:
+        _connectedSourceHandleIds:
+        - source
+        _connectedTargetHandleIds:
+        - target
+        _inParallelHovering: false
+        _isEntering: false
+        desc: 정상 상태 로그 데이터 포맷팅
+        outputs:
+          output:
+            children: null
+            type: string
+        selected: false
+        template: '[정상 상태 로그]
+
+          센서 ID: {{ sensor_id }}
+
+          설비: {{ facility_name }}
+
+          온도: {{ temperature }}°C
+
+          압력: {{ pressure }} bar
+
+          진동: {{ vibration }} mm/s
+
+          상태: 정상 범위 내
+
+          시간: {{ timestamp }}'
+        title: 정상 로그 데이터 생성
+        type: template-transform
+        variables:
+        - value_selector:
+          - start
+          - sensor_id
+          variable: sensor_id
+        - value_selector:
+          - start
+          - facility_name
+          variable: facility_name
+        - value_selector:
+          - param_extract_1
+          - temperature
+          variable: temperature
+        - value_selector:
+          - param_extract_1
+          - pressure
+          variable: pressure
+        - value_selector:
+          - param_extract_1
+          - vibration
+          variable: vibration
+        - value_selector:
+          - param_extract_1
+          - timestamp
+          variable: timestamp
+      id: template_5
+      position:
+        x: 2295.441693010229
+        y: 393.2335502882725
+      type: custom
+      zIndex: 1005
+    - data:
+        _connectedSourceHandleIds:
+        - source
+        _connectedTargetHandleIds:
+        - target
+        _inParallelHovering: false
+        _isEntering: false
+        desc: 이상 징후 탐지 시 최종 결과 포맷
+        selected: false
+        template: '✅ 모니터링 완료 - 이상 징후 발견
+
+
+          [웨어러블 알림 전송 예정]
+
+          {{ alert_msg }}
+
+
+          [모니터링 로그 기록 예정]
+
+          {{ log_data }}
+
+
+          * 실제 환경에서는 위 데이터가 외부 API로 전송됩니다.'
+        title: 이상 감지 결과 포맷팅
+        type: template-transform
+        variables:
+        - value_selector:
+          - template_3
+          - output
+          variable: alert_msg
+        - value_selector:
+          - template_4
+          - output
+          variable: log_data
+      id: template_anomaly_result
+      position:
+        x: 2924.029388174576
+        y: 271.83861436742137
+      type: custom
+      zIndex: 1005
+    - data:
+        _connectedSourceHandleIds:
+        - source
+        _connectedTargetHandleIds:
+        - target
+        _inParallelHovering: false
+        _isEntering: false
+        desc: 정상 상태 시 최종 결과 포맷
+        outputs:
+          output:
+            children: null
+            type: string
+        selected: false
+        template: '✅ 모니터링 완료 - 정상 상태
+
+
+          [웨어러블 알림]
+
+          이상 없음 - 알림 미전송
+
+
+          [모니터링 로그 기록 예정]
+
+          {{ log_data }}
+
+
+          * 실제 환경에서는 위 데이터가 외부 API로 전송됩니다.'
+        title: 정상 상태 결과 포맷팅
+        type: template-transform
+        variables:
+        - value_selector:
+          - template_5
+          - output
+          variable: log_data
+      id: template_normal_result
+      position:
+        x: 2934.8317202775656
+        y: 398.2914133506223
+      type: custom
+      zIndex: 1005
+    - data:
+        _connectedSourceHandleIds: []
+        _connectedTargetHandleIds:
+        - target
+        - target
+        _inParallelHovering: false
+        _isEntering: false
+        outputs:
+        - value_selector:
+          - start
+          - sensor_id
+          variable: sensor_id
+        - value_selector:
+          - start
+          - facility_name
+          variable: facility_name
+        - value_selector:
+          - code_1
+          - analysis_summary
+          variable: analysis_summary
+        - value_selector:
+          - code_1
+          - has_anomaly
+          variable: has_anomaly
+        - value_selector:
+          - code_1
+          - severity
+          variable: severity
+        - value_selector:
+          - code_1
+          - anomaly_details
+          variable: anomaly_details
+        - value_selector:
+          - param_extract_1
+          - temperature
+          variable: temperature
+        - value_selector:
+          - param_extract_1
+          - pressure
+          variable: pressure
+        - value_selector:
+          - param_extract_1
+          - vibration
+          variable: vibration
+        - value_selector:
+          - param_extract_1
+          - timestamp
+          variable: timestamp
+        - value_selector:
+          - if_else_1
+          - selected_case_id
+          variable: notification_result
+        selected: false
+        title: 모니터링 결과 반환
+        type: end
+      id: end
+      position:
+        x: 3504.538994159957
+        y: 5.704118779398527
+      type: custom
+      zIndex: 1005
+    viewport:
+      x: 27.257039372990448
+      y: 229.17818319608142
+      zoom: 0.5442421636128607

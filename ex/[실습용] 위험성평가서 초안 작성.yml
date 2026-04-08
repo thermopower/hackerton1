@@ -1,0 +1,993 @@
+app:
+  description: ''
+  icon: ''
+  icon_background: ''
+  memory_config: null
+  mode: workflow
+  name: '[실습용] 위험성평가서 초안 작성'
+  use_icon_as_answer_icon: false
+kind: app
+version: 0.1.5
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      image:
+        enabled: false
+      number_limits: 10
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        sourceType: start
+        targetType: knowledge-retrieval
+      id: 1770756029650-source-1770756067774_12_k787pycyx-target
+      selected: false
+      source: '1770756029650'
+      sourceHandle: source
+      target: 1770756067774_12_k787pycyx
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: knowledge-retrieval
+        targetType: llm
+      id: 1770756067774_12_k787pycyx-source-1770756047872_11_d84i08g76-target
+      selected: false
+      source: 1770756067774_12_k787pycyx
+      sourceHandle: source
+      target: 1770756047872_11_d84i08g76
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: llm
+        targetType: llm
+      id: 1770756047872_11_d84i08g76-source-1770756341608_15_jasafzpvk-target
+      selected: false
+      source: 1770756047872_11_d84i08g76
+      sourceHandle: source
+      target: 1770756341608_15_jasafzpvk
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: llm
+        targetType: llm
+      id: 1770756047872_11_d84i08g76-source-1770756320123_14_zh3epkp1n-target
+      selected: false
+      source: 1770756047872_11_d84i08g76
+      sourceHandle: source
+      target: 1770756320123_14_zh3epkp1n
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: template-transform
+        targetType: end
+      id: 1770756555574_17_ij90h2rnt-source-1770756391892_16_7cbm6vhcz-target
+      selected: false
+      source: 1770756555574_17_ij90h2rnt
+      sourceHandle: source
+      target: 1770756391892_16_7cbm6vhcz
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: llm
+        targetType: template-transform
+      id: 1770756320123_14_zh3epkp1n-source-1770756555574_17_ij90h2rnt-target
+      selected: false
+      source: 1770756320123_14_zh3epkp1n
+      sourceHandle: source
+      target: 1770756555574_17_ij90h2rnt
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: llm
+        targetType: template-transform
+      id: 1770756341608_15_jasafzpvk-source-1770756555574_17_ij90h2rnt-target
+      selected: false
+      source: 1770756341608_15_jasafzpvk
+      sourceHandle: source
+      target: 1770756555574_17_ij90h2rnt
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        _connectedSourceHandleIds:
+        - source
+        _connectedTargetHandleIds: []
+        _inParallelHovering: false
+        _isEntering: false
+        _waitingRun: false
+        desc: ''
+        selected: false
+        title: 시작
+        type: start
+        variables:
+        - allowed_file_extensions: []
+          allowed_file_types:
+          - image
+          - document
+          - audio
+          - video
+          allowed_file_upload_methods:
+          - local_file
+          - remote_url
+          label: 작업명
+          max_length: 10000
+          options: []
+          required: true
+          type: paragraph
+          variable: work_name
+        - allowed_file_extensions: []
+          allowed_file_types:
+          - image
+          - document
+          - audio
+          - video
+          allowed_file_upload_methods:
+          - local_file
+          - remote_url
+          label: 작업 설명
+          max_length: 10000
+          options: []
+          required: true
+          type: paragraph
+          variable: work_detail
+        - allowed_file_extensions: []
+          allowed_file_types:
+          - image
+          - document
+          - audio
+          - video
+          allowed_file_upload_methods:
+          - local_file
+          - remote_url
+          label: 작업 공정
+          max_length: 10000
+          options: []
+          required: true
+          type: paragraph
+          variable: work_step
+      id: '1770756029650'
+      position:
+        x: 428
+        y: 115
+      type: custom
+      zIndex: 1005
+    - data:
+        _connectedSourceHandleIds:
+        - source
+        - source
+        _connectedTargetHandleIds:
+        - target
+        _holdAddVariablePopup: false
+        _inParallelHovering: false
+        _isCandidate: false
+        _isEntering: false
+        _runningStatus: none
+        _showAddVariablePopup: false
+        _waitingRun: false
+        context:
+          enabled: true
+          variable_selector:
+          - 1770756067774_12_k787pycyx
+          - result
+        desc: ''
+        model:
+          completion_params:
+            max_tokens: 64000
+            temperature: 0
+          mode: chat
+          name: us.anthropic.claude-haiku-4-5-20251001-v1:0
+          provider: bedrock
+          registered_provider_id: 3fd718af-1d77-4ca8-a1b3-ce72e2ce59c9
+        prompt_template:
+        - role: system
+          text: " <ROLE>\n당신은 30년 경력의 안전 기술사이자 위험성평가 책임자입니다.\n당신의 임무는 입력된 [작업명], [작업\
+            \ 설명], [작업 공정], [SIF 사고 사례]를 분석하여,\n해당 작업에서 실제로 발생할 수 있는 구체적인 사고 상황 3가지를\
+            \ 예측하는 것입니다.\n</ROLE>\n\n<GOAL>\n막연한 \"위험하다\"는 표현이 아니라,\n\"어떤 행동을 하다가\
+            \ → 어떤 원인으로 → 어떤 사고가 발생하는지\"가 드러나는\n현실적인 사고 시나리오 2가지를 작성하십시오.\n</GOAL>\n\
+            \n<HOW_TO_THINK>\n아래 관점으로 사고를 예측하십시오.\n\n1. 높은 곳에서 작업하는가? → 떨어질 가능성\n\
+            2. 장비(굴착기, 지게차 등)가 있는가? → 끼임, 충돌, 전도 가능성\n3. 무거운 물건을 드는가? → 낙하, 협착, 허리부상\
+            \ 가능성\n4. 전기를 다루는가? → 감전, 화재 가능성\n5. 밀폐된 공간인가? → 질식, 가스중독 가능성\n6. 불꽃/열이\
+            \ 발생하는가? → 화재, 화상 가능성\n7. 땅을 파는가? → 토사 붕괴, 매설물 파손 가능성\n8. 회전하는 공구가 있는가?\
+            \ → 말림, 절단 가능성\n9. 바닥이 미끄러운가? → 넘어짐 가능성\n\n작업 도구, 위치, 환경을 반드시 고려하여 사고를\
+            \ 구체적으로 묘사하십시오.\n</HOW_TO_THINK>\n\n<WRITING_RULE>\n1. 모호한 표현 금지 (예: 다칠\
+            \ 수 있음, 위험함 금지)\n2. 반드시 인과관계 포함\n   → \"~하는 과정에서 ~로 인해 ~에 끼임/떨어짐/감전됨\"\
+            \ 형태\n3. 가장 심각하거나 발생 가능성이 높은 3가지만 작성\n4. 문장은 명사형으로 끝낼 것 (~함, ~됨)\n</WRITING_RULE>\n\
+            \n<OUTPUT_FORMAT>\n아래 형식의 마크다운으로만 출력하십시오.\n다른 설명은 절대 추가하지 마십시오.\n\n###\
+            \ \U0001F534 예상 위험 시나리오 1\n- \n\n### \U0001F534 예상 위험 시나리오 2\n- \n\n</OUTPUT_FORMAT>"
+        - role: user
+          text: '[작업명]: {{#1770756029650.work_name#}}
+
+
+            [작업 설명]: {{#1770756029650.work_detail#}}
+
+
+            [작업 단계]: {{#1770756029650.work_step#}}
+
+
+            [SIF 사고 사례]: {{#context#}}'
+        selected: false
+        title: 예상위험 추론 LLM
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      id: 1770756047872_11_d84i08g76
+      position:
+        x: 763
+        y: 273
+      type: custom
+      zIndex: 1005
+    - data:
+        _connectedSourceHandleIds:
+        - source
+        _connectedTargetHandleIds:
+        - target
+        _holdAddVariablePopup: false
+        _inParallelHovering: false
+        _isCandidate: false
+        _isEntering: false
+        _runningStatus: none
+        _showAddVariablePopup: false
+        _waitingRun: false
+        dataset_ids:
+        - 77b9b962-ab4c-4f6b-98aa-23a4e56bf4cb
+        dataset_retrieval_configs:
+        - dataset_id: 77b9b962-ab4c-4f6b-98aa-23a4e56bf4cb
+          dataset_name: 고위험요인(SIF) 정보(1858
+          indexing_technique: high_quality
+          provider: bedrock
+          retrieval_model:
+            reasoning_effort: null
+            reranking_enable: true
+            reranking_mode: reranking_model
+            reranking_model:
+              registered_provider_id: 3fd718af-1d77-4ca8-a1b3-ce72e2ce59c9
+              reranking_model_name: cohere.rerank-v3-5:0
+              reranking_provider_name: bedrock
+            score_threshold: 0.5
+            score_threshold_enabled: false
+            search_method: hybrid_search
+            top_k: 3
+            weights: null
+        desc: ''
+        multiple_retrieval_config:
+          reranking_enable: false
+          reranking_mode: reranking_model
+          score_threshold: null
+          top_k: 4
+          weights:
+            keyword_setting:
+              keyword_weight: 0.3
+            vector_setting:
+              embedding_model_name: cohere.embed-multilingual-v3
+              embedding_provider_name: bedrock
+              vector_weight: 0.7
+        query_variable_selector:
+        - '1770756029650'
+        - work_detail
+        retrieval_mode: multiple
+        selected: false
+        title: SIF 사례 지식 검색
+        type: knowledge-retrieval
+      id: 1770756067774_12_k787pycyx
+      position:
+        x: 760
+        y: 149
+      type: custom
+      zIndex: 1005
+    - data:
+        _connectedSourceHandleIds:
+        - source
+        _connectedTargetHandleIds:
+        - target
+        _holdAddVariablePopup: false
+        _inParallelHovering: true
+        _isCandidate: false
+        _isEntering: false
+        _runningStatus: none
+        _showAddVariablePopup: false
+        _waitingRun: false
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            max_tokens: 64000
+            temperature: 0
+          mode: chat
+          name: us.anthropic.claude-haiku-4-5-20251001-v1:0
+          provider: bedrock
+          registered_provider_id: 3fd718af-1d77-4ca8-a1b3-ce72e2ce59c9
+        prompt_template:
+        - role: system
+          text: "<ROLE>\n당신은 30년 경력의 안전 기술사이자 위험성평가 책임자입니다.\n당신의 임무는 입력된 작업 정보와 예상\
+            \ 위험을 분석하여,\n각 위험 시나리오마다 가장 핵심적인 안전 대책을 3가지 유형으로 각각 1개씩 제시하는 것입니다.\n</ROLE>\n\
+            \n<GOAL>\n각 \"예상 위험 시나리오\"마다 아래 3가지 대책을 정확히 1개씩 작성하십시오.\n\n1. 관리적 대책 (절차·통제·인원\
+            \ 관리)\n2. 공학적 대책 (물리적 장치·구조 개선)\n3. 보호구 대책 (개인 보호장비 착용)\n\n각 항목은 가장 효과적인\
+            \ 대표 대책 1개만 선택하십시오.\n</GOAL>\n\n<HOW_TO_THINK>\n\n아래 질문을 기준으로 가장 중요한 조치를\
+            \ 선택하십시오.\n\n1️⃣ 높은 곳 작업인가? → 추락 방지 중심\n2️⃣ 차량·중장비 사용인가? → 충돌·전도 방지 중심\n\
+            3️⃣ 무거운 물체인가? → 낙하·협착 방지 중심\n4️⃣ 전기 작업인가? → 감전 방지 중심\n5️⃣ 용접·불꽃 작업인가?\
+            \ → 화재 방지 중심\n6️⃣ 밀폐공간인가? → 질식 방지 중심\n\n여러 대책을 나열하지 말고,\n사고를 가장 효과적으로\
+            \ 줄일 수 있는 \"대표 대책 1개\"만 선택하십시오.\n</HOW_TO_THINK>\n\n<WRITING_RULE>\n1.\
+            \ 각 시나리오마다 관리/공학/보호구 항목을 각각 정확히 1개씩 작성하십시오.\n2. \"~한다\" 형태의 실행 문장으로 작성하십시오.\n\
+            3. 추상적 표현 금지 (예: 충분히 확인한다, 주의한다 금지).\n4. 중복되는 내용은 작성하지 마십시오.\n5. 아래 형식\
+            \ 외 설명을 추가하지 마십시오.\n</WRITING_RULE>\n\n<OUTPUT_FORMAT>\n입력된 각 \"예상 위험\
+            \ 시나리오\"마다 아래 형식을 반복하십시오.\n\n---\n\n### \U0001F534 예상 위험 시나리오 1 - 안전 대책\n\
+            \n\U0001F7E1 관리적 대책\n- \n\n\U0001F535 공학적 대책\n- \n\n\U0001F7E2 보호구 대책\n\
+            - \n\n---\n\n(입력된 시나리오 개수만큼 반복)\n</OUTPUT_FORMAT>"
+        - role: user
+          text: '[작업명]: {{#1770756029650.work_name#}}
+
+
+            [작업 설명]: {{#1770756029650.work_detail#}}
+
+
+            [작업 단계]: {{#1770756029650.work_step#}}
+
+
+            [예상 위험]: {{#1770756047872_11_d84i08g76.text#}}'
+        selected: false
+        title: 안전대책 추천 LLM
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      id: 1770756320123_14_zh3epkp1n
+      position:
+        x: 1078
+        y: 419
+      type: custom
+      zIndex: 1005
+    - data:
+        _connectedSourceHandleIds:
+        - source
+        _connectedTargetHandleIds:
+        - target
+        _holdAddVariablePopup: false
+        _inParallelHovering: false
+        _isCandidate: false
+        _isEntering: false
+        _runningStatus: none
+        _showAddVariablePopup: false
+        _waitingRun: false
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            max_tokens: 64000
+            temperature: 0
+          mode: chat
+          name: us.anthropic.claude-haiku-4-5-20251001-v1:0
+          provider: bedrock
+          registered_provider_id: 3fd718af-1d77-4ca8-a1b3-ce72e2ce59c9
+        prompt_template:
+        - role: system
+          text: '<ROLE>
+
+            당신은 30년 경력의 안전 기술사이자 위험성평가 책임자입니다.
+
+            당신의 임무는 입력된 작업 정보와 각 "예상 위험 시나리오"를 분석하여,
+
+            각 위험마다 발생 가능성(빈도), 피해 크기(강도), 위험성 점수, 위험 등급을 계산하는 것입니다.
+
+            </ROLE>
+
+
+            <GOAL>
+
+            입력에는 하나의 작업 정보와 여러 개의 "예상 위험 시나리오"가 포함됩니다.
+
+            각 위험 시나리오를 독립적으로 분석하여 아래 4가지를 각각 판단하십시오.
+
+
+            1. 빈도(Frequency) : 얼마나 자주 발생할 수 있는가? (1~5점)
+
+            2. 강도(Severity) : 사고가 발생하면 얼마나 크게 다치는가? (1~5점)
+
+            3. 위험성 점수(Risk Score) : 빈도 × 강도
+
+            4. 위험 등급(Risk Grade) : 점수에 따른 등급 판정
+
+            </GOAL>
+
+
+            <HOW_TO_THINK>
+
+
+            ### 1️⃣ 빈도 판단 (발생 가능성)
+
+            - 5점: 거의 매일 발생 가능
+
+            - 4점: 자주 발생 가능
+
+            - 3점: 가끔 발생 가능
+
+            - 2점: 드물게 발생
+
+            - 1점: 거의 발생하지 않음
+
+
+            ※ 작업 환경(지하, 협소 공간, 반복 작업 여부, 장비 사용 여부)을 반드시 고려하십시오.
+
+
+            ---
+
+
+            ### 2️⃣ 강도 판단 (피해 크기)
+
+            - 5점: 사망 또는 영구장애 가능
+
+            - 4점: 중대재해 (장기 치료)
+
+            - 3점: 휴업재해
+
+            - 2점: 경상
+
+            - 1점: 경미
+
+
+            ※ 높이(3층 추락 등), 중량물, 차량 충돌, 전도, 감전 등 치명적 요소는 5점 가능.
+
+            ※ 물리적 에너지 크기를 반드시 고려하십시오.
+
+
+            ---
+
+
+            ### 3️⃣ 위험 등급 계산
+
+
+            위험성 점수 = 빈도 × 강도
+
+
+            - 20~25점 → 1등급 (매우 위험)
+
+            - 13~19점 → 2등급 (위험)
+
+            - 9~12점 → 3등급 (보통)
+
+            - 4~8점 → 4등급 (낮음)
+
+            - 1~3점 → 5등급 (매우 낮음)
+
+
+            </HOW_TO_THINK>
+
+
+            <WRITING_RULE>
+
+            1. 각 위험 시나리오를 서로 독립적으로 평가하십시오.
+
+            2. 계산 오류 없이 반드시 빈도 × 강도를 확인하십시오.
+
+            3. 판단 근거는 내부적으로 사용하되 출력하지 마십시오.
+
+            4. 아래 형식 외 설명을 절대 추가하지 마십시오.
+
+            </WRITING_RULE>
+
+
+            <OUTPUT_FORMAT>
+
+            입력에 포함된 각 "예상 위험 시나리오"마다 아래 형식을 반복하십시오.
+
+
+            ### 🔴 예상 위험 시나리오 1 - 위험성 평가 결과
+
+            - 빈도(F): {숫자}
+
+            - 강도(S): {숫자}
+
+            - 위험성 점수(R = F × S): {숫자}
+
+            - 위험 등급: {숫자등급}
+
+
+            ### 🔴 예상 위험 시나리오 2 - 위험성 평가 결과
+
+            - 빈도(F): {숫자}
+
+            - 강도(S): {숫자}
+
+            - 위험성 점수(R = F × S): {숫자}
+
+            - 위험 등급: {숫자등급}
+
+
+            (입력된 시나리오 개수만큼 반복)
+
+            </OUTPUT_FORMAT>'
+        - role: user
+          text: '[작업명]: {{#1770756029650.work_name#}}
+
+
+            [작업 설명]: {{#1770756029650.work_detail#}}
+
+
+            [작업 단계]: {{#1770756029650.work_step#}}
+
+
+            [예상 위험]: {{#1770756047872_11_d84i08g76.text#}}'
+        selected: false
+        title: 위험성평가 LLM
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      id: 1770756341608_15_jasafzpvk
+      position:
+        x: 1082.5525994225452
+        y: 289.0702186944685
+      type: custom
+      zIndex: 1005
+    - data:
+        _connectedSourceHandleIds: []
+        _connectedTargetHandleIds:
+        - target
+        _holdAddVariablePopup: false
+        _inParallelHovering: false
+        _isCandidate: false
+        _isEntering: false
+        _runningStatus: none
+        _showAddVariablePopup: false
+        _waitingRun: false
+        desc: ''
+        outputs:
+        - value_selector:
+          - 1770756555574_17_ij90h2rnt
+          - output
+          variable: result
+        selected: false
+        title: 종료
+        type: end
+      id: 1770756391892_16_7cbm6vhcz
+      position:
+        x: 1404
+        y: 533
+      type: custom
+      zIndex: 1005
+    - data:
+        _connectedSourceHandleIds:
+        - source
+        _connectedTargetHandleIds:
+        - target
+        - target
+        _holdAddVariablePopup: false
+        _inParallelHovering: false
+        _isCandidate: false
+        _isEntering: false
+        _runningStatus: none
+        _showAddVariablePopup: false
+        _waitingRun: false
+        desc: ''
+        outputs:
+          output:
+            children: null
+            type: string
+        selected: false
+        template: '# 작업 개요
+
+          ---
+
+          - 작업명: {{ work_name }}
+
+          - 작업 설명: {{ work_detail }}
+
+          - 작업 공정: {{ work_step }}
+
+
+          # 예상 위험
+
+          ---
+
+          {{ risk }}
+
+
+          # 위험성평가
+
+          ---
+
+          {{ assesment }}
+
+
+          # 안전 대책
+
+          {{ control_measure }}'
+        title: 템플릿
+        type: template-transform
+        variables:
+        - value_selector:
+          - '1770756029650'
+          - work_name
+          variable: work_name
+        - value_selector:
+          - '1770756029650'
+          - work_detail
+          variable: work_detail
+        - value_selector:
+          - '1770756029650'
+          - work_step
+          variable: work_step
+        - value_selector:
+          - 1770756047872_11_d84i08g76
+          - text
+          variable: risk
+        - value_selector:
+          - 1770756341608_15_jasafzpvk
+          - text
+          variable: assesment
+        - value_selector:
+          - 1770756320123_14_zh3epkp1n
+          - text
+          variable: control_measure
+      id: 1770756555574_17_ij90h2rnt
+      position:
+        x: 1085
+        y: 563
+      type: custom
+      zIndex: 1005
+    - data:
+        _connectedSourceHandleIds: []
+        _connectedTargetHandleIds: []
+        _inParallelHovering: false
+        _isCandidate: false
+        _isEntering: false
+        author: 김원희
+        desc: ''
+        height: 654
+        selected: false
+        showAuthor: true
+        text: '{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"
+          <ROLE>","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"당신은
+          30년 경력의 안전 기술사이자 위험성평가 책임자입니다.","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"당신의
+          임무는 입력된 [작업명], [작업 설명], [작업 공정], [SIF 사고 사례]를 분석하여,","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"해당
+          작업에서 실제로 발생할 수 있는 구체적인 사고 상황 3가지를 예측하는 것입니다.","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"</ROLE>","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"<GOAL>","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"막연한
+          \"위험하다\"는 표현이 아니라,","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"\"어떤
+          행동을 하다가 → 어떤 원인으로 → 어떤 사고가 발생하는지\"가 드러나는","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"현실적인
+          사고 시나리오 2가지를 작성하십시오.","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"</GOAL>","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"<HOW_TO_THINK>","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"아래
+          관점으로 사고를 예측하십시오.","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"1.
+          높은 곳에서 작업하는가? → 떨어질 가능성","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"2.
+          장비(굴착기, 지게차 등)가 있는가? → 끼임, 충돌, 전도 가능성","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"3.
+          무거운 물건을 드는가? → 낙하, 협착, 허리부상 가능성","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"4.
+          전기를 다루는가? → 감전, 화재 가능성","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"5.
+          밀폐된 공간인가? → 질식, 가스중독 가능성","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"6.
+          불꽃/열이 발생하는가? → 화재, 화상 가능성","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"7.
+          땅을 파는가? → 토사 붕괴, 매설물 파손 가능성","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"8.
+          회전하는 공구가 있는가? → 말림, 절단 가능성","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"9.
+          바닥이 미끄러운가? → 넘어짐 가능성","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"작업
+          도구, 위치, 환경을 반드시 고려하여 사고를 구체적으로 묘사하십시오.","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"</HOW_TO_THINK>","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"<WRITING_RULE>","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"1.
+          모호한 표현 금지 (예: 다칠 수 있음, 위험함 금지)","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"2.
+          반드시 인과관계 포함","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"   →
+          \"~하는 과정에서 ~로 인해 ~에 끼임/떨어짐/감전됨\" 형태","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"3.
+          가장 심각하거나 발생 가능성이 높은 3가지만 작성","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"4.
+          문장은 명사형으로 끝낼 것 (~함, ~됨)","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"</WRITING_RULE>","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"<OUTPUT_FORMAT>","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"아래
+          형식의 마크다운으로만 출력하십시오.","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"다른
+          설명은 절대 추가하지 마십시오.","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"###
+          🔴 예상 위험 시나리오 1","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"-
+          ","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"###
+          🔴 예상 위험 시나리오 2","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"-
+          ","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"</OUTPUT_FORMAT>","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}'
+        theme: blue
+        title: ''
+        type: ''
+        width: 393
+      id: 1770759668855_1_hjg0lben8
+      position:
+        x: 728.3080205026421
+        y: -613.8912935278408
+      type: custom-note
+      zIndex: 1005
+    - data:
+        _connectedSourceHandleIds: []
+        _connectedTargetHandleIds: []
+        _holdAddVariablePopup: false
+        _inParallelHovering: false
+        _isCandidate: false
+        _isEntering: false
+        _showAddVariablePopup: false
+        author: 김원희
+        desc: ''
+        height: 654
+        selected: false
+        showAuthor: true
+        text: '{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"<ROLE>","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"당신은
+          30년 경력의 안전 기술사이자 위험성평가 책임자입니다.","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"당신의
+          임무는 입력된 작업 정보와 각 \"예상 위험 시나리오\"를 분석하여,","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"각
+          위험마다 발생 가능성(빈도), 피해 크기(강도), 위험성 점수, 위험 등급을 계산하는 것입니다.","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"</ROLE>","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"<GOAL>","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"입력에는
+          하나의 작업 정보와 여러 개의 \"예상 위험 시나리오\"가 포함됩니다.","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"각
+          위험 시나리오를 독립적으로 분석하여 아래 4가지를 각각 판단하십시오.","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"1.
+          빈도(Frequency) : 얼마나 자주 발생할 수 있는가? (1~5점)","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"2.
+          강도(Severity) : 사고가 발생하면 얼마나 크게 다치는가? (1~5점)","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"3.
+          위험성 점수(Risk Score) : 빈도 × 강도","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"4.
+          위험 등급(Risk Grade) : 점수에 따른 등급 판정","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"</GOAL>","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"<HOW_TO_THINK>","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"###
+          1️⃣ 빈도 판단 (발생 가능성)","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"-
+          5점: 거의 매일 발생 가능","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"-
+          4점: 자주 발생 가능","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"-
+          3점: 가끔 발생 가능","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"-
+          2점: 드물게 발생","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"-
+          1점: 거의 발생하지 않음","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"※
+          작업 환경(지하, 협소 공간, 반복 작업 여부, 장비 사용 여부)을 반드시 고려하십시오.","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"---","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"###
+          2️⃣ 강도 판단 (피해 크기)","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"-
+          5점: 사망 또는 영구장애 가능","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"-
+          4점: 중대재해 (장기 치료)","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"-
+          3점: 휴업재해","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"-
+          2점: 경상","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"-
+          1점: 경미","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"※
+          높이(3층 추락 등), 중량물, 차량 충돌, 전도, 감전 등 치명적 요소는 5점 가능.","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"※
+          물리적 에너지 크기를 반드시 고려하십시오.","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"---","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"###
+          3️⃣ 위험 등급 계산","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"위험성
+          점수 = 빈도 × 강도","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"-
+          20~25점 → 1등급 (매우 위험)","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"-
+          13~19점 → 2등급 (위험)","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"-
+          9~12점 → 3등급 (보통)","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"-
+          4~8점 → 4등급 (낮음)","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"-
+          1~3점 → 5등급 (매우 낮음)","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"</HOW_TO_THINK>","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"<WRITING_RULE>","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"1.
+          각 위험 시나리오를 서로 독립적으로 평가하십시오.","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"2.
+          계산 오류 없이 반드시 빈도 × 강도를 확인하십시오.","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"3.
+          판단 근거는 내부적으로 사용하되 출력하지 마십시오.","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"4.
+          아래 형식 외 설명을 절대 추가하지 마십시오.","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"</WRITING_RULE>","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"<OUTPUT_FORMAT>","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"입력에
+          포함된 각 \"예상 위험 시나리오\"마다 아래 형식을 반복하십시오.","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"###
+          🔴 예상 위험 시나리오 1 - 위험성 평가 결과","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"-
+          빈도(F): {숫자}","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"-
+          강도(S): {숫자}","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"-
+          위험성 점수(R = F × S): {숫자}","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"-
+          위험 등급: {숫자등급}","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"###
+          🔴 예상 위험 시나리오 2 - 위험성 평가 결과","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"-
+          빈도(F): {숫자}","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"-
+          강도(S): {숫자}","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"-
+          위험성 점수(R = F × S): {숫자}","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"-
+          위험 등급: {숫자등급}","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"(입력된
+          시나리오 개수만큼 반복)","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"</OUTPUT_FORMAT>","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}'
+        theme: blue
+        title: ''
+        type: ''
+        width: 393
+      id: 1770760067840_4_ohxhnb061
+      position:
+        x: 1182.9028139226305
+        y: -615.039991882838
+      type: custom-note
+      zIndex: 1005
+    - data:
+        _connectedSourceHandleIds: []
+        _connectedTargetHandleIds: []
+        _holdAddVariablePopup: false
+        _inParallelHovering: false
+        _isCandidate: false
+        _isEntering: false
+        _showAddVariablePopup: false
+        author: 김원희
+        desc: ''
+        height: 654
+        selected: false
+        showAuthor: true
+        text: '{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"<ROLE>","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"당신은
+          30년 경력의 안전 기술사이자 위험성평가 책임자입니다.","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"당신의
+          임무는 입력된 작업 정보와 예상 위험을 분석하여,","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"각
+          위험 시나리오마다 가장 핵심적인 안전 대책을 3가지 유형으로 각각 1개씩 제시하는 것입니다.","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"</ROLE>","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"<GOAL>","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"각
+          \"예상 위험 시나리오\"마다 아래 3가지 대책을 정확히 1개씩 작성하십시오.","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"1.
+          관리적 대책 (절차·통제·인원 관리)","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"2.
+          공학적 대책 (물리적 장치·구조 개선)","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"3.
+          보호구 대책 (개인 보호장비 착용)","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"각
+          항목은 가장 효과적인 대표 대책 1개만 선택하십시오.","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"</GOAL>","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"<HOW_TO_THINK>","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"아래
+          질문을 기준으로 가장 중요한 조치를 선택하십시오.","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"1️⃣
+          높은 곳 작업인가? → 추락 방지 중심","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"2️⃣
+          차량·중장비 사용인가? → 충돌·전도 방지 중심","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"3️⃣
+          무거운 물체인가? → 낙하·협착 방지 중심","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"4️⃣
+          전기 작업인가? → 감전 방지 중심","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"5️⃣
+          용접·불꽃 작업인가? → 화재 방지 중심","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"6️⃣
+          밀폐공간인가? → 질식 방지 중심","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"여러
+          대책을 나열하지 말고,","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"사고를
+          가장 효과적으로 줄일 수 있는 \"대표 대책 1개\"만 선택하십시오.","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"</HOW_TO_THINK>","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"<WRITING_RULE>","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"1.
+          각 시나리오마다 관리/공학/보호구 항목을 각각 정확히 1개씩 작성하십시오.","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"2.
+          \"~한다\" 형태의 실행 문장으로 작성하십시오.","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"3.
+          추상적 표현 금지 (예: 충분히 확인한다, 주의한다 금지).","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"4.
+          중복되는 내용은 작성하지 마십시오.","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"5.
+          아래 형식 외 설명을 추가하지 마십시오.","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"</WRITING_RULE>","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"<OUTPUT_FORMAT>","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"입력된
+          각 \"예상 위험 시나리오\"마다 아래 형식을 반복하십시오.","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"---","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"###
+          🔴 예상 위험 시나리오 1 - 안전 대책","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"🟡
+          관리적 대책","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"-
+          ","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"🔵
+          공학적 대책","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"-
+          ","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"🟢
+          보호구 대책","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"-
+          ","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"---","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"(입력된
+          시나리오 개수만큼 반복)","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"</OUTPUT_FORMAT>","type":"text","version":1}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}'
+        theme: blue
+        title: ''
+        type: ''
+        width: 393
+      id: 1770760070358_5_wvgh25pd4
+      position:
+        x: 1630.947036324188
+        y: -612.5717856170679
+      type: custom-note
+      zIndex: 1005
+    - data:
+        _connectedSourceHandleIds: []
+        _connectedTargetHandleIds: []
+        _inParallelHovering: false
+        _isCandidate: false
+        _isEntering: false
+        author: 김원희
+        desc: ''
+        height: 89
+        selected: false
+        showAuthor: true
+        text: '{"root":{"children":[{"children":[{"detail":0,"format":1,"mode":"normal","style":"font-size:
+          16px;","text":" 예상위험 추론 LLM","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1,"textFormat":1,"textStyle":"font-size:
+          16px;"}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}'
+        theme: blue
+        title: ''
+        type: ''
+        width: 392
+      id: 1770760134975_6_lbpvc52ii
+      position:
+        x: 728.5617495557481
+        y: -726.1549100816732
+      type: custom-note
+      zIndex: 1005
+    - data:
+        _connectedSourceHandleIds: []
+        _connectedTargetHandleIds: []
+        _holdAddVariablePopup: false
+        _inParallelHovering: false
+        _isCandidate: false
+        _isEntering: false
+        _showAddVariablePopup: false
+        author: 김원희
+        desc: ''
+        height: 89
+        selected: false
+        showAuthor: true
+        text: '{"root":{"children":[{"children":[{"detail":0,"format":1,"mode":"normal","style":"font-size:
+          16px;","text":" 위험성평가 LLM","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1,"textFormat":1,"textStyle":"font-size:
+          16px;"}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}'
+        theme: blue
+        title: ''
+        type: ''
+        width: 392
+      id: 1770760156025_7_86cox9nrw
+      position:
+        x: 1178.561749555748
+        y: -726.1549100816732
+      type: custom-note
+      zIndex: 1005
+    - data:
+        _connectedSourceHandleIds: []
+        _connectedTargetHandleIds: []
+        _holdAddVariablePopup: false
+        _inParallelHovering: false
+        _isCandidate: false
+        _isEntering: false
+        _showAddVariablePopup: false
+        author: 김원희
+        desc: ''
+        height: 89
+        selected: false
+        showAuthor: true
+        text: '{"root":{"children":[{"children":[{"detail":0,"format":1,"mode":"normal","style":"font-size:
+          16px;","text":" 안전대책 추천 LLM","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1,"textFormat":1,"textStyle":"font-size:
+          16px;"}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}'
+        theme: blue
+        title: ''
+        type: ''
+        width: 392
+      id: 1770760158310_8_nv9351j0d
+      position:
+        x: 1628.561749555748
+        y: -726.1549100816732
+      type: custom-note
+      zIndex: 1005
+    - data:
+        _connectedSourceHandleIds: []
+        _connectedTargetHandleIds: []
+        _inParallelHovering: false
+        _isCandidate: false
+        _isEntering: false
+        author: 김원희
+        desc: ''
+        height: 88
+        selected: false
+        showAuthor: true
+        text: '{"root":{"children":[{"children":[{"detail":0,"format":1,"mode":"normal","style":"font-size:
+          16px;","text":" 지하 3층 배관 개선 공사","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1,"textFormat":1,"textStyle":"font-size:
+          16px;"}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}'
+        theme: blue
+        title: ''
+        type: ''
+        width: 424
+      id: 1770777557717_1_qgze70d86
+      position:
+        x: 275.6173209660878
+        y: -280.1986489753742
+      type: custom-note
+      zIndex: 1005
+    - data:
+        _connectedSourceHandleIds: []
+        _connectedTargetHandleIds: []
+        _holdAddVariablePopup: false
+        _inParallelHovering: false
+        _isCandidate: false
+        _isEntering: false
+        _showAddVariablePopup: false
+        author: 김원희
+        desc: ''
+        height: 98
+        selected: false
+        showAuthor: true
+        text: '{"root":{"children":[{"children":[{"detail":0,"format":1,"mode":"normal","style":"font-size:
+          16px;","text":"지하 3층에서 스카이 차량에 탑승해서 배관 교체 및 용접 작업을 수행합니다.","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1,"textFormat":1,"textStyle":"font-size:
+          16px;"}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}'
+        theme: blue
+        title: ''
+        type: ''
+        width: 427
+      id: 1770777606865_2_doc36uys0
+      position:
+        x: 278.26590667825275
+        y: -168.89590475064966
+      type: custom-note
+      zIndex: 1005
+    - data:
+        _connectedSourceHandleIds: []
+        _connectedTargetHandleIds: []
+        _holdAddVariablePopup: false
+        _inParallelHovering: false
+        _isCandidate: false
+        _isEntering: false
+        _showAddVariablePopup: false
+        author: 김원희
+        desc: ''
+        height: 88
+        selected: true
+        showAuthor: true
+        text: '{"root":{"children":[{"children":[{"detail":0,"format":1,"mode":"normal","style":"font-size:
+          16px;","text":"2. 스카이차량 운용 승인 및 시동","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1,"textFormat":1,"textStyle":"font-size:
+          16px;"}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}'
+        theme: blue
+        title: ''
+        type: ''
+        width: 427
+      id: 1770777615362_3_v1whii1po
+      position:
+        x: 276.3843283962393
+        y: -45.82075488677155
+      type: custom-note
+      zIndex: 1005
+    viewport:
+      x: -44.560138830702726
+      y: 304.6840113780977
+      zoom: 0.7578582832551991

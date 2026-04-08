@@ -1,0 +1,330 @@
+app:
+  description: 제품명과 조회 기간을 입력하면 기존 가격 데이터베이스에서 데이터를 조회하여 가격 추이 차트와 AI 인사이트를 보고서 형태로
+    즉시 제공하는 빠른 확인 도구
+  icon: 🤖
+  icon_background: '#7C3AED'
+  memory_config: null
+  mode: workflow
+  name: 시장가격챗봇
+  use_icon_as_answer_icon: false
+kind: app
+version: 0.1.5
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      image:
+        enabled: false
+      number_limits: 10
+    sensitive_word_avoidance:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        sourceType: start
+        targetType: code
+      id: start-source-code_1-target
+      selected: false
+      source: start
+      sourceHandle: source
+      target: code_1
+      targetHandle: target
+      type: custom
+    - data:
+        sourceType: code
+        targetType: tool
+      id: code_1-source-tool_1-target
+      selected: false
+      source: code_1
+      sourceHandle: source
+      target: tool_1
+      targetHandle: target
+      type: custom
+    - data:
+        sourceType: code
+        targetType: llm
+      id: code_1-source-llm_1-target
+      selected: false
+      source: code_1
+      sourceHandle: source
+      target: llm_1
+      targetHandle: target
+      type: custom
+    - data:
+        sourceType: tool
+        targetType: end
+      id: tool_1-source-end-target
+      selected: false
+      source: tool_1
+      sourceHandle: source
+      target: end
+      targetHandle: target
+      type: custom
+    - data:
+        sourceType: llm
+        targetType: end
+      id: llm_1-source-end-target
+      selected: false
+      source: llm_1
+      sourceHandle: source
+      target: end
+      targetHandle: target
+      type: custom
+    nodes:
+    - data:
+        _connectedSourceHandleIds:
+        - source
+        _connectedTargetHandleIds: []
+        _inParallelHovering: false
+        _isEntering: false
+        desc: 제품명, 조회 기간, 가격 데이터 입력
+        selected: false
+        title: 시작
+        type: start
+        variables:
+        - label: 제품명
+          max_length: 100
+          required: true
+          type: text-input
+          variable: product_name
+        - label: 시작일 (YYYY-MM-DD)
+          max_length: 10
+          required: true
+          type: text-input
+          variable: start_date
+        - label: 종료일 (YYYY-MM-DD)
+          max_length: 10
+          required: true
+          type: text-input
+          variable: end_date
+        - label: 가격 데이터 (JSON)
+          max_length: 10000
+          required: true
+          type: paragraph
+          variable: price_data
+      id: start
+      position:
+        x: 80
+        y: 282
+      type: custom
+    - data:
+        _connectedSourceHandleIds:
+        - source
+        - source
+        _connectedTargetHandleIds:
+        - target
+        _inParallelHovering: false
+        _isEntering: false
+        code: "import json\n\ndef main(price_data: str) -> dict:\n    \"\"\"\n   \
+          \ 가격 데이터를 차트 입력 형식으로 변환\n    Expected input format: {\"dates\": [...], \"\
+          prices\": [...]}\n    Output: semicolon-separated strings for chart\n  \
+          \  \"\"\"\n    try:\n        # Parse input data\n        if isinstance(price_data,\
+          \ str):\n            data = json.loads(price_data)\n        else:\n    \
+          \        data = price_data\n        \n        dates = data.get('dates',\
+          \ [])\n        prices = data.get('prices', [])\n        \n        # Convert\
+          \ to semicolon-separated format\n        x_axis_data = ';'.join([str(d)\
+          \ for d in dates])\n        price_data_str = ';'.join([str(p) for p in prices])\n\
+          \        \n        # Calculate statistics for AI analysis\n        if prices:\n\
+          \            avg_price = sum(prices) / len(prices)\n            min_price\
+          \ = min(prices)\n            max_price = max(prices)\n            price_change\
+          \ = prices[-1] - prices[0] if len(prices) > 1 else 0\n            change_percent\
+          \ = (price_change / prices[0] * 100) if prices[0] != 0 else 0\n        else:\n\
+          \            avg_price = min_price = max_price = price_change = change_percent\
+          \ = 0\n        \n        return {\n            'x_axis': x_axis_data,\n\
+          \            'prices': price_data_str,\n            'avg_price': round(avg_price,\
+          \ 2),\n            'min_price': round(min_price, 2),\n            'max_price':\
+          \ round(max_price, 2),\n            'price_change': round(price_change,\
+          \ 2),\n            'change_percent': round(change_percent, 2),\n       \
+          \     'data_points': len(prices)\n        }\n    except Exception as e:\n\
+          \        # Return empty data on error\n        return {\n            'x_axis':\
+          \ '',\n            'prices': '',\n            'avg_price': 0,\n        \
+          \    'min_price': 0,\n            'max_price': 0,\n            'price_change':\
+          \ 0,\n            'change_percent': 0,\n            'data_points': 0\n \
+          \       }"
+        code_language: python3
+        desc: 차트 형식으로 데이터 변환
+        outputs:
+          avg_price:
+            type: number
+          change_percent:
+            type: number
+          data_points:
+            type: number
+          max_price:
+            type: number
+          min_price:
+            type: number
+          price_change:
+            type: number
+          prices:
+            type: string
+          x_axis:
+            type: string
+        selected: false
+        title: 데이터 변환
+        type: code
+        variables:
+        - value_selector:
+          - start
+          - price_data
+          variable: price_data
+      id: code_1
+      position:
+        x: 530
+        y: 282
+      type: custom
+    - data:
+        _connectedSourceHandleIds:
+        - source
+        _connectedTargetHandleIds:
+        - target
+        _inParallelHovering: false
+        _isEntering: false
+        desc: 라인 차트로 가격 변동 시각화
+        provider_id: chart
+        provider_name: chart
+        provider_type: builtin
+        selected: true
+        title: 가격 추이 차트 생성
+        tool_configurations: {}
+        tool_label: Line Chart
+        tool_name: line_chart
+        tool_parameters:
+          data:
+            type: mixed
+            value: '{{#code_1.prices#}}'
+          x_axis:
+            type: mixed
+            value: '{{#code_1.x_axis#}}'
+        type: tool
+      id: tool_1
+      position:
+        x: 980
+        y: 282
+      type: custom
+    - data:
+        _connectedSourceHandleIds:
+        - source
+        _connectedTargetHandleIds:
+        - target
+        _inParallelHovering: false
+        _isEntering: false
+        context:
+          enabled: false
+        desc: 가격 추이 분석 및 인사이트 제공
+        model:
+          completion_params:
+            max_tokens: 2000
+            temperature: 0.7
+          mode: chat
+          name: us.anthropic.claude-sonnet-4-5-20250929-v1:0
+          provider: bedrock
+        prompt_template:
+        - role: system
+          text: 당신은 가격 데이터 분석 전문가입니다. 제공된 가격 통계를 바탕으로 명확하고 실용적인 인사이트를 제공하세요.
+        - role: user
+          text: '# 가격 분석 보고서 작성
+
+
+            제품: {{#start.product_name#}}
+
+            기간: {{#start.start_date#}} ~ {{#start.end_date#}}
+
+
+            ## 가격 통계
+
+            - 데이터 포인트: {{#code_1.data_points#}}개
+
+            - 평균 가격: {{#code_1.avg_price#}}원
+
+            - 최저 가격: {{#code_1.min_price#}}원
+
+            - 최고 가격: {{#code_1.max_price#}}원
+
+            - 가격 변동: {{#code_1.price_change#}}원 ({{#code_1.change_percent#}}%)
+
+
+            위 데이터를 바탕으로 다음 내용을 포함한 분석 보고서를 작성해주세요:
+
+
+            1. **가격 추이 요약**: 전체적인 가격 흐름 (상승/하락/안정)
+
+            2. **주요 인사이트**: 가격 변동의 의미와 특징
+
+            3. **추천 사항**: 구매 타이밍이나 주의사항
+
+
+            보고서는 명확하고 읽기 쉽게 작성해주세요.'
+        selected: false
+        title: AI 인사이트 생성
+        type: llm
+        vision:
+          enabled: false
+      id: llm_1
+      position:
+        x: 1430
+        y: 282
+      type: custom
+    - data:
+        _connectedSourceHandleIds: []
+        _connectedTargetHandleIds:
+        - target
+        - target
+        _inParallelHovering: false
+        _isEntering: false
+        desc: 차트와 AI 분석 결과 반환
+        outputs:
+        - value_selector:
+          - start
+          - product_name
+          variable: product_name
+        - value_selector:
+          - start
+          - start_date
+          variable: analysis_period
+        - value_selector:
+          - tool_1
+          - files
+          variable: price_chart
+        - value_selector:
+          - llm_1
+          - text
+          variable: ai_insights
+        - value_selector:
+          - code_1
+          - avg_price
+          variable: avg_price
+        - value_selector:
+          - code_1
+          - change_percent
+          variable: price_change_percent
+        selected: false
+        title: 보고서 출력
+        type: end
+      id: end
+      position:
+        x: 1880
+        y: 282
+      type: custom
+    viewport:
+      x: -340.3811916502964
+      y: 127.25861204550944
+      zoom: 0.7273788568006815

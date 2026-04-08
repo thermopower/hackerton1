@@ -1,0 +1,37 @@
+app:
+  description: 운전가이드, 비상운전절차, 공정 이론 문서를 통합 지식베이스에 등록하고, 사용자의 질문과 상황 설명을 받아 관련 문서를
+    검색한 뒤 AI가 절차와 근거를 체계적으로 정리하여 보고서 형태로 제공하는 시스템
+  icon: 🤖
+  icon_background: '#7C3AED'
+  memory_config: null
+  mode: workflow
+  name: 공정 운전 지식 검색 시스템
+  use_icon_as_answer_icon: false
+kind: app
+version: 0.1.5
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload: {}
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges: []
+    nodes:
+    - data:
+        desc: ''
+        title: 시작
+        type: start
+        variables: []
+      id: start_1770775995618
+      position:
+        x: 80
+        y: 282
+      type: custom
