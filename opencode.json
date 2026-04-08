@@ -1,9 +1,4 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "autoupdate": true,
-  "permissions": {
-    "edit": "allow",
-    "bash": "allow",
-    "webfetch": "ask"
-  }
+  "autoupdate": true
 }
