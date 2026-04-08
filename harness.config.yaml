@@ -1,0 +1,35 @@
+apiVersion: harness/v1
+
+# 기본 어댑터 (claude-code | anthropic-api | opencode)
+defaultAdapter: claude-code
+
+# 에이전트별 어댑터 오버라이드 (주석 해제하여 혼합 모드 사용)
+# agentAdapters:
+#   planner: anthropic-api
+#   implementer: opencode
+#   reviewer: anthropic-api
+
+# 이벤트 핸들러 (기존 bash 훅 스크립트 재사용)
+events:
+  - event: "agent:after-stop"
+    matcher: "sprint-builder"
+    handler: ".claude/hooks/check-smoke.sh"
+    timeout: 120
+  - event: "agent:after-stop"
+    matcher: "integration-fixer"
+    handler: ".claude/hooks/track-fix-attempt.sh"
+    timeout: 10
+  - event: "agent:after-stop"
+    matcher: "evaluator|retrospective"
+    handler: ".claude/hooks/check-output.sh"
+    timeout: 10
+
+# 상태 디렉토리
+stateDir: .claude-state
+
+# 검증 스크립트
+scripts:
+  smoke: scripts/smoke
+  unit: scripts/unit
+  e2e: scripts/e2e
+  evaluationGate: scripts/evaluation-gate

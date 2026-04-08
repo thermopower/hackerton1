@@ -1,0 +1,63 @@
+{
+  "enabledMcpjsonServers": ["playwright"],
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/session-start.sh",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "matcher": "sprint-builder",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/check-smoke.sh",
+            "timeout": 120
+          }
+        ]
+      },
+      {
+        "matcher": "reviewer",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/check-output.sh",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/trigger-retrospective.sh",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "integration-fixer",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/track-fix-attempt.sh",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "evaluator|retrospective",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/check-output.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

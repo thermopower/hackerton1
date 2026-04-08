@@ -1,0 +1,10 @@
+{
+  "sprints": [],
+  "summary": {
+    "total_sprints": 0,
+    "pass_rate": null,
+    "avg_blockers_per_sprint": 0.0,
+    "avg_turns": 0.0,
+    "repeated_blocker_types": {}
+  }
+}

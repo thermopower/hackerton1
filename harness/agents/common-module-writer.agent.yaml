@@ -1,0 +1,28 @@
+apiVersion: harness/v1
+kind: Agent
+metadata:
+  name: common-module-writer
+  description: 공통 로직이나 라이브러리 세팅을 위한 공통 모듈 작업 계획을 작성하고 구현
+spec:
+  role: worker
+  maxIterations: 30
+  requiredTools:
+  - file:read
+  - file:write
+  - file:edit
+  - file:search
+  - code:search
+  - shell:exec
+  - agent:invoke
+  promptRef: prompts/base/common-module-writer.md
+  adapterOverrides:
+    claude-code:
+      model: sonnet
+      tools:
+      - Read
+      - Write
+      - Edit
+      - Glob
+      - Grep
+      - Bash
+      - Agent

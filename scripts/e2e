@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# e2e test runner
+# profile이 설정되지 않은 경우 skip합니다.
+
+PROFILE=$(grep '^profile:' .claude-state/sprint-contract.md 2>/dev/null | awk '{print $2}')
+PROFILE_SCRIPT=""
+[ -n "$PROFILE" ] && PROFILE_SCRIPT="profiles/$PROFILE/scripts/e2e"
+
+if [ -z "$PROFILE_SCRIPT" ] || [ ! -f "$PROFILE_SCRIPT" ]; then
+  echo "[e2e] SKIP - profile이 설정되지 않았습니다."
+  echo "[e2e] profiles/<stack>/scripts/e2e 를 구현하면 E2E 테스트가 실행됩니다."
+  exit 0
+fi
+
+echo "[e2e] profile e2e test 실행: $PROFILE_SCRIPT"
+bash "$PROFILE_SCRIPT"

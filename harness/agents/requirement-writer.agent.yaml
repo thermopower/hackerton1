@@ -1,0 +1,23 @@
+apiVersion: harness/v1
+kind: Agent
+metadata:
+  name: requirement-writer
+  description: 사용자와 대화하여 프로젝트 요구사항을 수집하고 docs/requirement.md를 작성한다. requirement.md가
+    비어있을 때 planner 이전에 실행한다.
+spec:
+  role: worker
+  maxIterations: 20
+  requiredTools:
+  - file:read
+  - file:write
+  - file:edit
+  - web:search
+  promptRef: prompts/base/requirement-writer.md
+  adapterOverrides:
+    claude-code:
+      model: sonnet
+      tools:
+      - Read
+      - Write
+      - Edit
+      - WebSearch

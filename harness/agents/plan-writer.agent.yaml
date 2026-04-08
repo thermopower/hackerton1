@@ -1,0 +1,26 @@
+apiVersion: harness/v1
+kind: Agent
+metadata:
+  name: plan-writer
+  description: feature 단위 모듈화 설계문서를 작성. 상태 설계 포함.
+spec:
+  role: worker
+  maxIterations: 25
+  requiredTools:
+  - file:read
+  - file:write
+  - file:edit
+  - file:search
+  - code:search
+  - agent:invoke
+  promptRef: prompts/base/plan-writer.md
+  adapterOverrides:
+    claude-code:
+      model: sonnet
+      tools:
+      - Read
+      - Write
+      - Edit
+      - Glob
+      - Grep
+      - Agent

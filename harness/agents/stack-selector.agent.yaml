@@ -1,0 +1,26 @@
+apiVersion: harness/v1
+kind: Agent
+metadata:
+  name: stack-selector
+  description: 요구사항을 읽고 기술 스택을 확정한 뒤 프로필 스크립트를 생성한다. planner가 내부적으로 호출한다.
+spec:
+  role: worker
+  maxIterations: 15
+  requiredTools:
+  - file:read
+  - file:write
+  - file:edit
+  - file:search
+  - code:search
+  - shell:exec
+  promptRef: prompts/base/stack-selector.md
+  adapterOverrides:
+    claude-code:
+      model: sonnet
+      tools:
+      - Read
+      - Write
+      - Edit
+      - Glob
+      - Grep
+      - Bash

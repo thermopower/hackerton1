@@ -1,0 +1,20 @@
+## Quality and Security Checks
+- 코드를 작성하거나 수정한 뒤에는 프로젝트에 설정된 기존 품질 도구를 우선 사용해 검증한다.
+- 가능하면 다음 항목을 순서대로 확인한다:
+  - format
+  - lint
+  - type check
+  - test
+  - build
+- 가능하면 추가로 다음 보안 점검도 수행한다:
+  - dependency audit
+  - secret scan
+  - static security check
+- 실패한 검증 결과를 무시하지 않는다.
+- 타입 오류, 테스트 실패, 빌드 실패, 취약점 경고, 시크릿 노출 가능성은 절대 가볍게 넘기지 않는다.
+- 새 도구를 임의로 도입하지 말고 현재 저장소에 설정된 도구를 우선 사용한다.
+- 변경 범위에 가까운 최소 비용 검사부터 시작하고 필요 시 전체 검사로 확장한다.
+- 외부 입력, 파일 경로, 쿼리, 쉘 명령, HTML 렌더링, 리다이렉트 URL은 항상 위험 지점으로 간주한다.
+- 민감 정보, API 키, 토큰, 비밀번호, 인증서, 개인키를 코드, 설정, 테스트 데이터, 예제 코드에 하드코딩하지 않는다.
+- SQL Injection, XSS, Command Injection, Path Traversal, SSRF, insecure deserialization 같은 위험 패턴을 만들지 않는다.
+- 사용자 입력 검증, 권한 검증, 민감 정보 로그 노출 여부를 항상 점검한다.

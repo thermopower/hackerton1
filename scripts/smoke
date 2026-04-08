@@ -1,0 +1,99 @@
+#!/usr/bin/env bash
+# smoke test runner
+# profile이 설정된 경우 profile smoke를 실행합니다.
+# profile이 없는 경우 앱 디렉토리의 기본 검사를 실행합니다.
+
+PROFILE=$(grep '^profile:' .claude-state/sprint-contract.md 2>/dev/null | awk '{print $2}')
+PROFILE_SCRIPT=""
+[ -n "$PROFILE" ] && PROFILE_SCRIPT="profiles/$PROFILE/scripts/smoke"
+
+if [ -n "$PROFILE_SCRIPT" ] && [ -f "$PROFILE_SCRIPT" ]; then
+  echo "[smoke] profile smoke 실행: $PROFILE_SCRIPT"
+  bash "$PROFILE_SCRIPT"
+  exit $?
+fi
+
+# profile 없음 — 앱 디렉토리 기반 기본 검사
+APP_DIR=""
+[ -d "app" ] && APP_DIR="app"
+[ -d "src" ] && APP_DIR="src"
+
+if [ -z "$APP_DIR" ]; then
+  echo "[smoke] SKIP - profile 없음, app/src 디렉토리 없음"
+  exit 0
+fi
+
+echo "[smoke] profile 없음. 기본 검사 실행 (대상: $APP_DIR)"
+FAILED=0
+
+# 1. TypeScript/JavaScript 프로젝트: lint + 빌드 확인
+if [ -f "package.json" ]; then
+  echo "[smoke] package.json 발견."
+  if command -v npm >/dev/null 2>&1; then
+    # lint
+    if npm run lint --if-present 2>&1; then
+      echo "[smoke] lint PASS"
+    else
+      echo "[smoke] lint FAIL" >&2
+      FAILED=1
+    fi
+    # build
+    if npm run build --if-present 2>&1; then
+      echo "[smoke] build PASS"
+    else
+      echo "[smoke] build FAIL" >&2
+      FAILED=1
+    fi
+  else
+    echo "[smoke] npm 없음. lint/build 검사 건너뜀."
+  fi
+fi
+
+# 2. Python 프로젝트: syntax 검사
+if [ -f "pyproject.toml" ] || [ -f "requirements.txt" ] || [ -f "setup.py" ]; then
+  echo "[smoke] Python 프로젝트 발견. syntax 검사..."
+  _try_python() { "$1" -c "import sys; sys.exit(0)" 2>/dev/null && echo "$1"; }
+  PYTHON="${PYTHON_CMD:-$(_try_python python || _try_python python3 || echo '')}"
+  if [ -n "$PYTHON" ]; then
+    PY_ERRORS=$(find "$APP_DIR" -name "*.py" -exec "$PYTHON" -m py_compile {} \; 2>&1)
+    if [ -z "$PY_ERRORS" ]; then
+      echo "[smoke] Python syntax PASS"
+    else
+      echo "[smoke] Python syntax FAIL" >&2
+      echo "$PY_ERRORS" >&2
+      FAILED=1
+    fi
+  fi
+fi
+
+# 3. stub/placeholder 핵심 경로 잔존 검사
+echo "[smoke] stub/placeholder 검사 중..."
+STUB_HITS=$(grep -rn \
+  --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" \
+  --include="*.py" --include="*.go" \
+  --exclude-dir="__tests__" --exclude-dir="node_modules" --exclude-dir=".next" \
+  --exclude-dir=".git" --exclude-dir="dist" --exclude-dir="build" \
+  --exclude="*.test.ts" --exclude="*.test.tsx" --exclude="*.test.js" \
+  --exclude="*.spec.ts" --exclude="*.spec.tsx" --exclude="*.spec.js" \
+  --exclude="test_*.py" --exclude="*_test.go" \
+  "TODO\|FIXME\|stub\|placeholder\|not implemented\|NotImplemented" \
+  "$APP_DIR" 2>/dev/null \
+  | grep -v "^[^:]*:[0-9]*:[[:space:]]*//" \
+  | grep -v "^[^:]*:[0-9]*:[[:space:]]*#" \
+  | grep -v "^[^:]*:[0-9]*:[[:space:]]*\*" \
+  || true)
+if [ -n "$STUB_HITS" ]; then
+  echo "[smoke] 핵심 경로에 stub/placeholder 발견:" >&2
+  echo "$STUB_HITS" >&2
+  FAILED=1
+else
+  echo "[smoke] stub 검사 PASS"
+fi
+
+if [ $FAILED -eq 0 ]; then
+  echo "[smoke] 기본 검사 모두 통과."
+  echo "[smoke] profiles/<stack>/scripts/smoke 를 구현하면 실제 통합 smoke test가 실행됩니다."
+  exit 0
+else
+  exit 1
+fi

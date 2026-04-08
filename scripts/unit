@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# unit test runner
+# profile이 설정되지 않은 경우 skip합니다.
+
+PROFILE=$(grep '^profile:' .claude-state/sprint-contract.md 2>/dev/null | awk '{print $2}')
+PROFILE_SCRIPT=""
+[ -n "$PROFILE" ] && PROFILE_SCRIPT="profiles/$PROFILE/scripts/unit"
+
+if [ -z "$PROFILE_SCRIPT" ] || [ ! -f "$PROFILE_SCRIPT" ]; then
+  echo "[unit] SKIP - profile이 설정되지 않았습니다."
+  echo "[unit] profiles/<stack>/scripts/unit 를 구현하면 단위 테스트가 실행됩니다."
+  exit 0
+fi
+
+echo "[unit] profile unit test 실행: $PROFILE_SCRIPT"
+bash "$PROFILE_SCRIPT"
