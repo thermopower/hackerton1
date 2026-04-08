@@ -1,6 +1,6 @@
 # 하네스 운영 규칙
 
-이 저장소는 Claude Code 기반 앱 생성 하네스다.
+이 저장소는 Claude Code 기반 **Dify 워크플로우 YAML 생성 하네스**다.
 기본 모드는 **일반 편집 모드**다. 하네스 루프(requirement-writer → planner → sprint-builder → ...)는 `/harness` 명령으로 명시적으로 시작한다.
 
 ---
@@ -15,10 +15,9 @@
 | Superpowers 스킬 | 대체 에이전트 |
 |---|---|
 | `brainstorming` | `requirement-writer` |
-| `writing-plans` | `planner`, `plan-writer` |
+| `writing-plans` | `planner` |
 | `executing-plans` | `sprint-builder` |
 | `systematic-debugging` | `integration-fixer` |
-| `test-driven-development` | `implementer`, `common-module-writer` |
 
 하네스 루프 모드에서는 Skill 도구를 호출하지 않는다.
 

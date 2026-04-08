@@ -1,12 +1,13 @@
 # Harness Version
 
-version: 1.0
-updated: 2026-04-05
+version: 2.0
+updated: 2026-04-08
 
 ## 변경 이력
 
 | 버전 | 날짜 | 변경 내용 |
 |------|------|-----------|
+| 2.0 | 2026-04-08 | **하네스 전면 개편: Dify 워크플로우 YAML 생성 전용**. requirement-writer(앱 인터뷰→워크플로우 인터뷰), planner(앱 스프린트 설계→노드-엣지 그래프 설계+workflow-design.md), sprint-builder(코드 구현→YAML 파일 작성), evaluator(Playwright 브라우저 테스트→YAML 구조 검증 V-1~V-10), reviewer(코드/UX 비평→워크플로우 품질 비평), docs/node-reference.md 신규 생성(9가지 노드 타입 스키마), harness-reference.md 개편, 불필요 에이전트(stack-selector, prd-writer, userflow-writer 등) 하네스 루프에서 제거 |
 | 1.1 | 2026-04-08 | 멀티모델 하네스 지원: Python 오케스트레이터(`harness/` 패키지) + 어댑터 패턴(claude-code / opencode / anthropic-api) 추가. OpenCode 실행 환경(opencode.json, .opencode/agents/ 17개, .opencode/rules/, .opencode/plugins/harness-hooks.js) 추가. harness.config.yaml, pyproject.toml, 범용 에이전트 스펙(harness/agents/*.agent.yaml), 프롬프트 관리(harness/prompts/), 도구 추상화(harness/tools/) 포함. `python -m harness run/start/status/agent` CLI 진입점 제공 |
 | 1.0 | 2026-04-07 | planner step 10: 첫 sprint 승인 시 전체 스프린트 로드맵 요약 테이블을 먼저 출력하도록 변경. 사용자가 모든 요구사항이 여러 sprint에 걸쳐 구현됨을 한눈에 파악할 수 있게 함 |
 | 1.0 | 2026-04-05 | 기술 스택 화이트리스트 도입: docs/stack-whitelist.md 신규 생성(15개 카테고리, 검증된 라이브러리 목록). requirement-writer 섹션 3에 화이트리스트 안내 원칙 추가. planner 9단계에 whitelist 참조 및 non_whitelist_libs 필드 기록 규칙 추가. harness-reference.md에 스택 화이트리스트 섹션 추가 |
