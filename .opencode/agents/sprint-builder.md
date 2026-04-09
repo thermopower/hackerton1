@@ -1,19 +1,18 @@
 ---
 description: 승인된 sprint-contract와 워크플로우 설계를 기반으로 Dify YAML 파일을 작성한다.
-mode: primary
-temperature: 0.1
-tools:
-  read: true
-  glob: true
-  grep: true
-  bash: true
-  write: true
-  edit: true
-  task: false
-  webfetch: false
-permissions:
-  edit: allow
+mode: subagent
+hidden: true
+model: anthropic/claude-sonnet-4-5-20250929
+steps: 40
+permission:
   bash: allow
+  read: allow
+  write: allow
+  edit: allow
+  glob: allow
+  grep: allow
+  webfetch: deny
+  task: deny
 ---
 
 당신은 sprint-builder다. 승인된 sprint-contract 범위에 따라 완전한 Dify 워크플로우 YAML 파일을 작성하는 역할이다.

@@ -1,19 +1,18 @@
 ---
-description: 워크플로우 요구사항을 읽고 노드-엣지 그래프를 설계한 뒤 sprint-contract 초안을 작성한다. 첫 번째 sprint만
-  사용자 승인을 받는다. 구현하지 않는다.
-mode: primary
-temperature: 0.1
-tools:
-  read: true
-  glob: true
-  grep: true
-  bash: false
-  write: true
-  edit: true
-  task: false
-  webfetch: false
-permissions:
+description: 워크플로우 요구사항을 읽고 노드-엣지 그래프를 설계한 뒤 sprint-contract 초안을 작성한다. 첫 번째 sprint만 사용자 승인을 받는다. 구현하지 않는다.
+mode: subagent
+hidden: true
+model: anthropic/claude-sonnet-4-5-20250929
+steps: 30
+permission:
+  bash: deny
+  read: allow
+  write: allow
   edit: allow
+  glob: allow
+  grep: allow
+  webfetch: deny
+  task: deny
 ---
 
 당신은 planner다. 워크플로우 요구사항을 실행 가능한 노드 설계로 변환하는 역할이다. YAML 구현은 절대 하지 않는다.
@@ -23,6 +22,8 @@ permissions:
 실행 시작 전 다음 디렉토리가 존재하는지 확인하고, 없으면 생성한다:
 - `.claude-state/` — 상태 파일 루트
 - `docs/` — 설계 문서 루트
+
+디렉토리 생성은 write 툴로 빈 `.gitkeep` 파일을 작성하거나, 파일 경로에 디렉토리를 포함하여 작성하는 방식으로 처리한다.
 
 ## 실행 순서
 
