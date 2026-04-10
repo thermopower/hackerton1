@@ -272,10 +272,19 @@ data:
 
 배열의 각 항목에 동일한 처리를 반복. 내부에 노드 그래프를 포함.
 
+### ① iteration 노드 본체
+
 ```yaml
+id: <iteration_id>
+type: custom
 data:
   type: iteration
   title: <노드 이름>
+  _children:               # 내부 노드 ID 목록 (iteration-start 포함)
+    - <iteration_id>start
+    - <내부노드ID_1>
+    - <내부노드ID_2>
+  start_node_id: <iteration_id>start   # 내부 진입점 노드 ID
   iterator_selector:
     - <소스노드ID>
     - <배열변수명>             # 문자열/숫자/객체/파일 배열
@@ -286,9 +295,68 @@ data:
   is_parallel: false           # true: 병렬 실행
   parallel_nums: 5             # 병렬 시 동시 실행 수 (1~10)
   error_handle_mode: continue  # continue | terminate | remove_abnormal_output
-  # 내부 노드들은 별도 nodes 배열에 정의
-  # 내부에서 item (현재값), index (현재 순서, 0부터) 변수 사용 가능
 ```
+
+### ② iteration-start 노드 (내부 진입점, 반드시 포함)
+
+```yaml
+id: <iteration_id>start
+type: custom-iteration-start   # ⚠️ custom-iteration-start (custom이나 start가 아님)
+parentId: <iteration_id>       # 소속 iteration 노드 ID
+position:
+  x: <숫자>
+  y: <숫자>
+data:
+  type: iteration-start        # ⚠️ iteration-start (start가 아님)
+  title: 시작
+  isInContainer: true          # 컨테이너 내부 노드 표시
+  iteration_id: <iteration_id> # 소속 iteration 노드 ID
+```
+
+### ③ 내부 일반 노드 (iteration 안의 모든 노드)
+
+```yaml
+id: <내부노드ID>
+type: custom
+parentId: <iteration_id>       # ⚠️ 필수: 소속 iteration 노드 ID
+position:
+  x: <숫자>
+  y: <숫자>
+data:
+  type: <노드타입>              # llm, code, http-request 등
+  title: <노드 이름>
+  isInContainer: true          # ⚠️ 필수
+  iteration_id: <iteration_id> # ⚠️ 필수: 소속 iteration 노드 ID
+  # ... 노드 타입별 필드
+  # 내부에서 item (현재값), index (현재 순서 0부터) 사용 가능
+  # value_selector: [<iteration_id>, item] 또는 [<iteration_id>, index]
+```
+
+### ④ 내부 엣지
+
+```yaml
+- id: <소스ID>-source-<타겟ID>-target
+  source: <소스노드ID>
+  sourceHandle: source
+  target: <타겟노드ID>
+  targetHandle: target
+  type: custom
+  selected: false
+  zIndex: 1002                 # ⚠️ 필수: 내부 엣지는 반드시 zIndex: 1002
+  data:
+    sourceType: <소스 노드타입>
+    targetType: <타겟 노드타입>
+```
+
+### 핵심 규칙 요약
+
+| 항목 | 값 |
+|------|---|
+| iteration-start 노드 type | `custom-iteration-start` |
+| iteration-start data.type | `iteration-start` |
+| 내부 노드 필수 필드 | `parentId`, `isInContainer: true`, `iteration_id` |
+| iteration 본체 내부 목록 | `_children` 배열 |
+| 내부 엣지 | `zIndex: 1002` 필수 |
 
 **출력**: `output` (각 반복 결과의 배열)
 
@@ -512,8 +580,8 @@ data:
   url: 'https://api.example.com/endpoint/{{#start.변수명#}}'
   headers:
     - key: Authorization
-      type: variable           # variable | constant
-      value: '{{#start.api_key#}}'
+      type: constant           # ⚠️ 'Bearer {{#...#}}' 같은 혼합 문자열은 반드시 constant
+      value: 'Bearer {{#start.api_key#}}'
     - key: Content-Type
       type: constant
       value: application/json
@@ -524,13 +592,16 @@ data:
         - <소스노드ID>
         - <변수명>
   body:
-    type: json                 # json | form-data | x-www-form-urlencoded | raw-text | none
+    type: json                 # body 포맷: json | form-data | x-www-form-urlencoded | raw-text | none
     data:
       - key: message
-        type: variable
+        type: variable         # ⚠️ data 항목의 type은 variable 또는 constant만 (json/array 등 금지)
         value:
           - <소스노드ID>
           - <변수명>
+      - key: static_field
+        type: constant         # 고정 문자열 또는 JSON 리터럴
+        value: '{"key": "val"}'
   timeout:
     connect: 10                # 연결 대기 (0~300초)
     read: 60                   # 수신 대기 (0~120초)
@@ -539,6 +610,17 @@ data:
 
 **출력**: `body` (응답 내용), `status_code`, `headers`, `files`  
 **⚠️ status_code가 200이 아니어도 자동 오류 중단 안 됨 → if-else로 검증 필수**
+
+### headers/params/body.data 항목 type 구분 규칙
+
+| 상황 | type | value 형식 |
+|------|------|-----------|
+| 노드 출력값 참조 | `variable` | `[노드ID, 변수명]` (배열) |
+| 고정 문자열 | `constant` | `"값"` (문자열) |
+| `Bearer {{#...#}}` 혼합 | `constant` | `'Bearer {{#노드ID.변수명#}}'` (문자열) |
+| JSON 리터럴 | `constant` | `'{"key": "val"}'` (문자열) |
+
+**⚠️ `type: json`, `type: array` 등은 Dify가 인식하지 못한다. `variable` 또는 `constant`만 사용한다.**
 
 ---
 
