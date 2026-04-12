@@ -277,40 +277,50 @@ data:
 ```yaml
 id: <iteration_id>
 type: custom
+zIndex: 1                        # ⚠️ 컨테이너 노드는 zIndex: 1 (일반 노드 1005와 다름)
+position:
+  x: <숫자>
+  y: <숫자>
 data:
   type: iteration
   title: <노드 이름>
-  _children:               # 내부 노드 ID 목록 (iteration-start 포함)
+  _children:                     # 내부 노드 ID 목록 (iteration-start 포함)
     - <iteration_id>start
     - <내부노드ID_1>
     - <내부노드ID_2>
   start_node_id: <iteration_id>start   # 내부 진입점 노드 ID
   iterator_selector:
     - <소스노드ID>
-    - <배열변수명>             # 문자열/숫자/객체/파일 배열
+    - <배열변수명>                # 문자열/숫자/객체/파일 배열
   output_selector:
     - <내부노드ID>
-    - <출력변수명>             # 각 반복의 결과값
-  output_type: string          # string | number | object | array[string] 등
-  is_parallel: false           # true: 병렬 실행
-  parallel_nums: 5             # 병렬 시 동시 실행 수 (1~10)
-  error_handle_mode: continue  # continue | terminate | remove_abnormal_output
+    - <출력변수명>                # 각 반복의 결과값
+  output_type: string            # string | number | object | array[string] 등
+  is_parallel: false             # true: 병렬 실행
+  parallel_nums: 5               # 병렬 시 동시 실행 수 (1~10)
+  error_handle_mode: continue    # continue | terminate | remove_abnormal_output
+  height: 542                    # UI 렌더링용 (생략 가능, Dify가 자동 계산)
+  width: 1000                    # UI 렌더링용 (생략 가능, Dify가 자동 계산)
 ```
 
 ### ② iteration-start 노드 (내부 진입점, 반드시 포함)
 
 ```yaml
 id: <iteration_id>start
-type: custom-iteration-start   # ⚠️ custom-iteration-start (custom이나 start가 아님)
-parentId: <iteration_id>       # 소속 iteration 노드 ID
+type: custom-iteration-start     # ⚠️ custom-iteration-start (custom이나 start가 아님)
+parentId: <iteration_id>         # 소속 iteration 노드 ID
+zIndex: 1002                     # ⚠️ iteration-start 노드 고정값
 position:
-  x: <숫자>
-  y: <숫자>
+  x: 24                          # 컨테이너 내부 상대 좌표
+  y: 68
 data:
-  type: iteration-start        # ⚠️ iteration-start (start가 아님)
-  title: 시작
-  isInContainer: true          # 컨테이너 내부 노드 표시
-  iteration_id: <iteration_id> # 소속 iteration 노드 ID
+  type: iteration-start          # ⚠️ iteration-start (start가 아님)
+  title: ''
+  isInContainer: true            # ⚠️ 필수
+  iteration_id: <iteration_id>   # ⚠️ 필수: 소속 iteration 노드 ID
+  _connectedSourceHandleIds:
+    - source
+  _connectedTargetHandleIds: []  # iteration-start는 타겟 핸들 없음
 ```
 
 ### ③ 내부 일반 노드 (iteration 안의 모든 노드)
@@ -318,31 +328,33 @@ data:
 ```yaml
 id: <내부노드ID>
 type: custom
-parentId: <iteration_id>       # ⚠️ 필수: 소속 iteration 노드 ID
+parentId: <iteration_id>         # ⚠️ 필수: 소속 iteration 노드 ID
+zIndex: 1005                     # 내부 노드 표준값
 position:
-  x: <숫자>
+  x: <숫자>                      # 컨테이너 내부 상대 좌표
   y: <숫자>
 data:
-  type: <노드타입>              # llm, code, http-request 등
+  type: <노드타입>                # llm, code, http-request, tool 등
   title: <노드 이름>
-  isInContainer: true          # ⚠️ 필수
-  iteration_id: <iteration_id> # ⚠️ 필수: 소속 iteration 노드 ID
+  isInContainer: true            # ⚠️ 필수
+  iteration_id: <iteration_id>   # ⚠️ 필수: 소속 iteration 노드 ID
   # ... 노드 타입별 필드
-  # 내부에서 item (현재값), index (현재 순서 0부터) 사용 가능
-  # value_selector: [<iteration_id>, item] 또는 [<iteration_id>, index]
+  # item 참조: {{#<iteration_id>.item#}} 또는 value_selector: [<iteration_id>, item]
+  # index 참조: {{#<iteration_id>.index#}} 또는 value_selector: [<iteration_id>, index]
 ```
 
-### ④ 내부 엣지
+### ④ 엣지 zIndex 규칙
 
 ```yaml
+# 외부 엣지 (iteration 컨테이너 바깥)
 - id: <소스ID>-source-<타겟ID>-target
-  source: <소스노드ID>
-  sourceHandle: source
-  target: <타겟노드ID>
-  targetHandle: target
-  type: custom
-  selected: false
-  zIndex: 1002                 # ⚠️ 필수: 내부 엣지는 반드시 zIndex: 1002
+  ...
+  zIndex: 0                      # ⚠️ 외부 엣지는 zIndex: 0
+
+# 내부 엣지 (iteration 컨테이너 안)
+- id: <소스ID>-source-<타겟ID>-target
+  ...
+  zIndex: 1002                   # ⚠️ 내부 엣지는 zIndex: 1002
   data:
     sourceType: <소스 노드타입>
     targetType: <타겟 노드타입>
@@ -352,11 +364,15 @@ data:
 
 | 항목 | 값 |
 |------|---|
-| iteration-start 노드 type | `custom-iteration-start` |
-| iteration-start data.type | `iteration-start` |
-| 내부 노드 필수 필드 | `parentId`, `isInContainer: true`, `iteration_id` |
+| iteration 컨테이너 `zIndex` | `1` |
+| iteration-start 노드 `type` | `custom-iteration-start` |
+| iteration-start `data.type` | `iteration-start` |
+| iteration-start `zIndex` | `1002` |
+| 내부 일반 노드 필수 필드 | `parentId`, `isInContainer: true`, `iteration_id` |
+| 내부 일반 노드 `zIndex` | `1005` |
 | iteration 본체 내부 목록 | `_children` 배열 |
-| 내부 엣지 | `zIndex: 1002` 필수 |
+| 외부 엣지 `zIndex` | `0` |
+| 내부 엣지 `zIndex` | `1002` |
 
 **출력**: `output` (각 반복 결과의 배열)
 
