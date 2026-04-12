@@ -380,28 +380,131 @@ data:
 
 ## 9. loop (루프)
 
-조건 충족까지 구간 반복. 배열 불필요.
+조건 충족까지 구간 반복. 배열 불필요. iteration과 구조 유사하나 break_conditions/loop_variables 방식이 다름.
+
+### ① loop 노드 본체
 
 ```yaml
+id: <loop_id>
+type: custom
+zIndex: 1                        # ⚠️ 컨테이너 노드는 zIndex: 1 (iteration과 동일)
+position:
+  x: <숫자>
+  y: <숫자>
 data:
   type: loop
   title: <노드 이름>
-  max_loop_count: 10           # 최대 반복 횟수 (1~100, 기본 10)
+  _children:                     # 내부 노드 ID 목록 (loop-start 포함)
+    - <loop_id>start
+    - <내부노드ID_1>
+    - <내부노드ID_2>
+  start_node_id: <loop_id>start  # 내부 진입점 노드 ID
+  loop_count: 10                 # ⚠️ max_loop_count가 아닌 loop_count
+  logical_operator: and
+  error_handle_mode: terminated  # continue | terminated
   break_conditions:
-    - variable_selector:
-        - <루프변수명>
-      comparison_operator: '='
-      value: 'done'
-    logical_operator: and
-  loop_variables:
-    - variable: <루프변수명>
-      value_selector:
-        - <소스노드ID>
-        - <변수명>
+    - id: <uuid>                 # 고유 식별자 (UUID 형식)
+      comparison_operator: is    # is | is not | = | ≠ | > | < 등
+      value: ''                  # 비교 대상 값 (빈 문자열이면 "비어있음" 조건)
+      value_selector:            # 비교할 내부 노드 출력값
+        - <내부노드ID>
+        - <출력변수명>
+      value_type: variable       # variable | constant
+      varType: string            # 변수 타입
+      variable_selector:         # 비교 기준이 될 loop 변수
+        - <loop_id>
+        - <loop_variable_name>
+  loop_variables:                # 루프 내에서 유지/갱신할 변수 목록
+    - id: <uuid>
+      label: <변수명>            # assigner로 갱신할 때 이 label로 참조
+      value: ''                  # 초기값
+      value_type: constant       # constant | variable
+      var_type: string           # string | number | object 등
+  height: 363                    # UI 렌더링용 (생략 가능)
+  width: 1591                    # UI 렌더링용 (생략 가능)
 ```
 
-**출력**: 루프 변수들의 최종값, `loop_round` (실제 반복 횟수)  
-**제한**: 최대 실행 시간 5분
+### ② loop-start 노드 (내부 진입점, 반드시 포함)
+
+```yaml
+id: <loop_id>start
+type: custom-loop-start          # ⚠️ custom-loop-start (iteration의 custom-iteration-start와 대응)
+parentId: <loop_id>              # 소속 loop 노드 ID
+zIndex: 1002
+position:
+  x: 24                          # 컨테이너 내부 상대 좌표
+  y: 68
+data:
+  type: loop-start               # ⚠️ loop-start (iteration-start와 대응)
+  title: ''
+  isInContainer: true
+  # ⚠️ iteration_id 필드 없음 (iteration-start와 다름)
+  _connectedSourceHandleIds:
+    - source
+  _connectedTargetHandleIds: []
+```
+
+### ③ 내부 일반 노드
+
+```yaml
+id: <내부노드ID>
+type: custom
+parentId: <loop_id>              # ⚠️ 필수: 소속 loop 노드 ID
+zIndex: 1005
+position:
+  x: <숫자>                      # 컨테이너 내부 상대 좌표
+  y: <숫자>
+data:
+  type: <노드타입>
+  title: <노드 이름>
+  isInContainer: true            # ⚠️ 필수
+  iteration_id: <loop_id>        # ⚠️ 필수: loop도 loop_id가 아닌 iteration_id 필드명 사용
+  # ... 노드 타입별 필드
+  # loop 변수 참조: {{#<loop_id>.변수명#}} 또는 value_selector: [<loop_id>, 변수명]
+```
+
+### ④ 루프 변수 갱신 — assigner 활용
+
+loop_variables는 assigner 노드로 매 반복마다 갱신한다.
+
+```yaml
+data:
+  type: assigner
+  isInContainer: true
+  iteration_id: <loop_id>
+  items:
+    - input_type: variable
+      operation: over-write      # over-write | += (누적)
+      value:
+        - <내부노드ID>
+        - <출력변수명>
+      variable_selector:
+        - <loop_id>
+        - <loop_variable_name>   # loop_variables의 label과 일치
+      write_mode: over-write
+```
+
+### ⑤ 엣지 zIndex (iteration과 동일)
+
+- 외부 엣지: `zIndex: 0`
+- 내부 엣지: `zIndex: 1002`
+
+### 핵심 규칙 요약
+
+| 항목 | 값 |
+|------|---|
+| loop 컨테이너 `zIndex` | `1` |
+| loop-start 노드 `type` | `custom-loop-start` |
+| loop-start `data.type` | `loop-start` |
+| loop-start `zIndex` | `1002` |
+| loop-start `iteration_id` 필드 | **없음** (iteration-start와 다름) |
+| 내부 노드 컨테이너 필드명 | `iteration_id` (loop도 동일, loop_id 아님) |
+| 최대 반복 필드명 | `loop_count` (max_loop_count 아님) |
+| 루프 변수 갱신 | 내부 `assigner` 노드로 처리 |
+| 외부 엣지 `zIndex` | `0` |
+| 내부 엣지 `zIndex` | `1002` |
+
+**출력**: `loop_variables`의 최종값을 `[<loop_id>, <변수명>]`으로 참조
 
 ---
 
