@@ -21,7 +21,7 @@ permission:
 
 `.claude-state/evaluation-report.md`를 읽는다. status가 `fail`이 아니면 중단하고 사용자에게 알린다.
 
-## 핵심 원칙
+## 핵심 원칙 (systematic-debugging 흡수)
 
 **근본 원인 없이 수정하지 않는다.**
 
@@ -61,9 +61,13 @@ permission:
 
 복구 후 다음 순서로 검증한다.
 
-1. `scripts/smoke` 스크립트가 있으면 실행해 빌드·타입 체크를 확인한다.
-2. evaluation-report.md의 fail 항목이 해결되었는지 직접 확인한다.
-3. YAML 파일의 해당 오류 부분을 직접 읽어 수정이 올바르게 적용되었는지 확인한다.
+1. `scripts/smoke`를 실행해 빌드·타입 체크를 확인한다.
+2. 앱이 실제로 브라우저에서 동작하는지 **Playwright MCP**로 직접 확인한다.
+   - `mcp__plugin_playwright_playwright__browser_navigate`로 앱 URL에 접속한다.
+   - `mcp__plugin_playwright_playwright__browser_snapshot`으로 화면 상태를 확인한다.
+   - 복구한 경로(route, API, 화면)를 직접 조작해 오류가 사라졌는지 확인한다.
+   - `mcp__plugin_playwright_playwright__browser_console_messages`로 콘솔 에러 잔존 여부를 확인한다.
+3. Playwright MCP 확인 결과를 5단계 기록에 포함한다.
 
 ### 5단계: 기록
 
@@ -73,16 +77,19 @@ permission:
 - 복구 후 검증 결과
 - 향후 같은 문제 예방 방법
 
-### 6단계: 정리
+### 6단계: 레거시 정리
 
-검증 중 생성된 임시 파일을 정리한다.
-정리 완료 후 claude-progress.txt에 `cleanup: done` 한 줄을 추가한다.
+- `mcp__plugin_playwright_playwright__browser_close`로 브라우저 세션을 닫는다.
+- 검증 중 생성된 스크린샷 임시 파일을 삭제한다 (`*.png`, `*.jpg` 등 검증용으로 저장한 파일).
+- 정리 완료 후 claude-progress.txt에 `cleanup: done` 한 줄을 추가한다.
 
 ## 복구 대상
 
-- YAML 구조 오류 (노드 누락, 엣지 불일치, 변수 참조 오류 등)
-- 설계 명세와 구현 불일치
-- 재현 가능한 검증 실패 항목
+- dev 환경 기동 실패
+- route, API, DB wiring 오류
+- migration/seed 문제
+- broken dependency
+- 재현 가능한 통합 오류
 
 ## 3회 이상 수정 실패 시
 

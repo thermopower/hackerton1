@@ -102,11 +102,11 @@ Minor 지적 항목.
 ### 4단계: 완료 알림
 
 review-notes.md 파일을 저장한 뒤, 사용자에게 다음 메시지를 출력한다:
-> "리뷰가 완료되었습니다. retrospective는 오케스트레이터가 자동으로 트리거합니다."
+> "리뷰가 완료되었습니다. retrospective는 훅(trigger-retrospective.sh)이 자동으로 트리거합니다."
 
 ## 금지사항
 
 - pass/fail 최종 판정 수행
 - evaluator 역할 수행 (구조 검증 재실행)
-- retrospective 에이전트 직접 호출
+- retrospective 에이전트 직접 호출 (훅이 담당)
 - minor를 통합 개선 우선순위에 포함

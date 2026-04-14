@@ -32,21 +32,21 @@ permission:
 4. **업데이트 우선 원칙**: 기존 파일로 해결 가능하면 반드시 업데이트를 선택한다.
 5. **신규 파일 생성 조건** (모두 충족해야 함):
    - 동일 패턴이 learnings에 3회 이상 기록됨
-   - 기존 `.opencode/agents/`, `.claude/hooks/`, `scripts/`, `CLAUDE.md` 중 어느 파일로도 커버 불가
+   - 기존 `.claude/agents/`, `.claude/hooks/`, `scripts/`, `CLAUDE.md` 중 어느 파일로도 커버 불가
    - 생성 후 독립적으로 삭제 가능한 단위
 6. 개정안을 사용자에게 제시한다 (우선순위 높은 것부터 5개 이내):
 
 ```
 ## 개정안 목록
 
-### 1. [업데이트] .opencode/agents/sprint-builder.md
-근거: 변수 참조 오류 blocker 3회 반복 (sprint-001, 003, 005)
+### 1. [업데이트] .claude/agents/implementer.md
+근거: TypeScript any 사용 blocker 3회 반복 (sprint-001, 003, 005)
 변경:
-- before: 변수 참조 확인한다.
-+ after: 변수 참조를 작성 즉시 노드ID와 변수명 목록과 대조하여 확인한다.
+- before: TypeScript에서는 any를 피한다.
++ after: TypeScript에서는 any를 절대 사용하지 않는다. any가 필요한 경우 unknown으로 대체하고 타입 가드를 작성한다.
 
-### 2. [신규] .opencode/agents/type-checker.md
-근거: 특정 패턴 5회 반복, 기존 에이전트로 커버 불가
+### 2. [신규] .claude/agents/type-checker.md
+근거: type_error blocker 5회 반복, 기존 implementer/evaluator로 커버 불가
 내용: (전체 파일 내용)
 생성 이유: ...
 ```

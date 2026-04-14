@@ -26,23 +26,23 @@ permission:
 1. `.claude-state/evaluation-report.md`를 읽어 eval 결과, blocker 목록을 파악한다.
 2. `.claude-state/sprint-contract.md`를 읽어 sprint ID와 범위를 파악한다.
 3. `.claude-state/review-notes.md`를 읽어 반복 코멘트 패턴을 파악한다.
-4. review-notes.md의 Critical/Major 항목을 `.claude-state/backlog.md`에 등록한다.
+3-a. review-notes.md의 Critical/Major 항목을 `.claude-state/backlog.md`에 등록한다.
    - 파일이 없으면 새로 생성한다.
    - 이미 등록된 항목(같은 sprint_id + 항목명)은 중복 등록하지 않는다.
    - 형식: `- [<sprint_id>] <항목명>: <한 줄 설명>`
-5. `bash scripts/collect-metrics.sh <sprint_id>`를 실행해 metrics.json을 갱신한다. 스크립트가 없으면 건너뛴다.
+4. `~/.claude/projects/` memory를 참조해 cross-session 패턴을 확인한다.
+5. `bash scripts/collect-metrics.sh <sprint_id>`를 실행해 metrics.json을 갱신한다.
 6. `.claude-state/learnings.md`에 이번 sprint 요약을 누적한다.
    - 형식: `## <sprint_id> — <date>\n- eval: <result>\n- blocker: <유형>\n- 턴 수: <수>\n- 패턴: <관찰>`
    - 파일 상단 `status:`를 `active`로 갱신한다.
    - 기존 내용을 삭제하지 않는다. 항상 하단에 추가한다.
    - 항목당 5줄 이내로 간결하게 작성한다.
-7. `bash scripts/check-thresholds.sh`를 실행한다. 스크립트가 없으면 `improve_needed: false`로 기록한다.
+7. `bash scripts/check-thresholds.sh`를 실행한다.
    - exit 1(임계점 도달): `.claude-state/learnings.md` 상단 `improve_needed:`를 `true`로 갱신한다.
    - exit 0(정상): `.claude-state/learnings.md` 상단 `improve_needed:`를 `false`로 갱신한다.
 8. `feature-list.json`을 읽어 미완료 sprint가 남아있는지 확인한다.
    - status가 `done`이 아닌 feature가 있으면: `remaining_sprints: true`를 `.claude-state/claude-progress.txt`에 기록한다.
    - 모든 feature가 `done`이면: `remaining_sprints: false`를 기록한다.
-   - `feature-list.json`이 없으면 `remaining_sprints: false`로 처리한다.
 
 ## 완료 후 출력
 
