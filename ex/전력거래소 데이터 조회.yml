@@ -1,0 +1,533 @@
+app:
+  description: 한국전력거래소_계통한계가격 및 수요예측(하루전 발전계획용)
+  icon: ''
+  icon_background: ''
+  memory_config: null
+  mode: workflow
+  name: 전력거래소 데이터 조회
+  use_icon_as_answer_icon: false
+kind: app
+version: 0.1.5
+workflow:
+  conversation_variables: []
+  environment_variables:
+  - description: ''
+    id: e4feb91c-ebe8-481a-ac9c-77380aeddb24
+    name: service_key
+    selector:
+    - env
+    - service_key
+    value: d87176da5cede5eb823de22d70040d75651c845ef0395157194df039484214a2
+    value_type: string
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      image:
+        enabled: false
+      number_limits: 10
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        sourceType: loop-start
+        targetType: tool
+      id: 1769644344536_1_2vcsg3zs6start-source-1769758983940_4_o67kzg625-target
+      selected: false
+      source: 1769644344536_1_2vcsg3zs6start
+      sourceHandle: source
+      target: 1769758983940_4_o67kzg625
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        sourceType: tool
+        targetType: loop
+      id: 1769759902622_8_fe0k9uzrn-source-1769644344536_1_2vcsg3zs6-target
+      selected: false
+      source: 1769759902622_8_fe0k9uzrn
+      sourceHandle: source
+      target: 1769644344536_1_2vcsg3zs6
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: tool
+        targetType: llm
+      id: 1769758983940_4_o67kzg625-source-1769760055251_10_vbrr61fzm-target
+      selected: false
+      source: 1769758983940_4_o67kzg625
+      sourceHandle: source
+      target: 1769760055251_10_vbrr61fzm
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        sourceType: loop
+        targetType: end
+      id: 1769644344536_1_2vcsg3zs6-source-1769152601893_2_rypnfy5v9-target
+      selected: false
+      source: 1769644344536_1_2vcsg3zs6
+      sourceHandle: source
+      target: 1769152601893_2_rypnfy5v9
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: http-request
+        targetType: end
+      id: 1769152594286_1_z78gbh2q2-source-1769152601893_2_rypnfy5v9-target
+      selected: false
+      source: 1769152594286_1_z78gbh2q2
+      sourceHandle: source
+      target: 1769152601893_2_rypnfy5v9
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: start
+        targetType: tool
+      id: 1769152586237-source-1769759902622_8_fe0k9uzrn-target
+      selected: false
+      source: '1769152586237'
+      sourceHandle: source
+      target: 1769759902622_8_fe0k9uzrn
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: llm
+        targetType: http-request
+      id: 1769760055251_10_vbrr61fzm-source-1770007664492_1_y4ru1fc2h-target
+      selected: false
+      source: 1769760055251_10_vbrr61fzm
+      sourceHandle: source
+      target: 1770007664492_1_y4ru1fc2h
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        sourceType: http-request
+        targetType: assigner
+      id: 1770007664492_1_y4ru1fc2h-source-1769759132284_7_f8dkf0bxq-target
+      selected: false
+      source: 1770007664492_1_y4ru1fc2h
+      sourceHandle: source
+      target: 1769759132284_7_f8dkf0bxq
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    nodes:
+    - data:
+        _connectedSourceHandleIds:
+        - source
+        _connectedTargetHandleIds: []
+        _inParallelHovering: false
+        _isEntering: false
+        _runningStatus: none
+        _waitingRun: false
+        desc: ''
+        selected: false
+        title: 시작
+        type: start
+        variables:
+        - allowed_file_extensions: []
+          allowed_file_types:
+          - image
+          - document
+          - audio
+          - video
+          allowed_file_upload_methods:
+          - local_file
+          - remote_url
+          label: 시작날짜(YYYYMMDD)
+          max_length: 100
+          options: []
+          required: true
+          type: text-input
+          variable: date
+      id: '1769152586237'
+      position:
+        x: -586.8762862264822
+        y: -207.96646192180413
+      type: custom
+      zIndex: 1005
+    - data:
+        _connectedSourceHandleIds:
+        - source
+        _connectedTargetHandleIds: []
+        _holdAddVariablePopup: false
+        _inParallelHovering: false
+        _isCandidate: false
+        _isEntering: false
+        _showAddVariablePopup: false
+        _waitingRun: true
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data: ''
+          type: none
+        desc: ''
+        headers: ''
+        method: get
+        params: 'serviceKey:{{#env.service_key#}}
+
+          pageNo:1
+
+          numOfRows:5
+
+          dataType:json
+
+          date:{{#1769152586237.date#}}'
+        selected: false
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: API 요청
+        type: http-request
+        url: https://apis.data.go.kr/B552115/SmpWithForecastDemand/getSmpWithForecastDemand
+        variables: []
+      id: 1769152594286_1_z78gbh2q2
+      position:
+        x: 998.5353637699383
+        y: 309.03864686578123
+      type: custom
+      zIndex: 1005
+    - data:
+        _connectedSourceHandleIds: []
+        _connectedTargetHandleIds:
+        - target
+        - target
+        _holdAddVariablePopup: false
+        _inParallelHovering: false
+        _isEntering: false
+        _showAddVariablePopup: true
+        _waitingRun: true
+        desc: ''
+        outputs:
+        - value_selector:
+          - 1769644344536_1_2vcsg3zs6
+          - loophero
+          variable: output
+        selected: false
+        title: 종료
+        type: end
+      id: 1769152601893_2_rypnfy5v9
+      position:
+        x: 2219.324965888504
+        y: 86.3696599609138
+      type: custom
+      zIndex: 1005
+    - data:
+        _children:
+        - 1769644344536_1_2vcsg3zs6start
+        - 1769758983940_4_o67kzg625
+        - 1769759132284_7_f8dkf0bxq
+        - 1769760055251_10_vbrr61fzm
+        - 1770007664492_1_y4ru1fc2h
+        _connectedSourceHandleIds:
+        - source
+        _connectedTargetHandleIds:
+        - target
+        _holdAddVariablePopup: false
+        _inParallelHovering: false
+        _isCandidate: false
+        _isEntering: false
+        _isShowTips: false
+        _iterationIndex: 2
+        _runningStatus: none
+        _showAddVariablePopup: false
+        _waitingRun: false
+        break_conditions:
+        - comparison_operator: is
+          id: d72a2c6f-e0fb-4601-ad84-f00e6bcd06a6
+          value: ''
+          value_selector:
+          - 1769758983940_4_o67kzg625
+          - text
+          value_type: variable
+          varType: string
+          variable_selector:
+          - 1769644344536_1_2vcsg3zs6
+          - end_condition
+        desc: ''
+        error_handle_mode: terminated
+        height: 363.4193322524616
+        logical_operator: and
+        loop_count: 10
+        loop_variables:
+        - id: a52340ed-7d67-4e48-987d-6c55bdb808db
+          label: date
+          value: ''
+          value_type: constant
+          var_type: string
+        - id: c12d9c2b-5616-4bdf-9472-3fcf02614a41
+          label: end_condition
+          value: ''
+          value_type: constant
+          var_type: string
+        - id: c6d5a41e-70a3-4f29-a5ec-49e936bf5400
+          label: loophero
+          value: ''
+          value_type: constant
+          var_type: string
+        selected: true
+        start_node_id: 1769644344536_1_2vcsg3zs6start
+        title: 루프
+        type: loop
+        width: 1591.5983504762883
+      id: 1769644344536_1_2vcsg3zs6
+      position:
+        x: 41.33293778415617
+        y: -166.39620337123918
+      type: custom
+      zIndex: 1
+    - data:
+        _connectedSourceHandleIds:
+        - source
+        _connectedTargetHandleIds: []
+        _inParallelHovering: false
+        _isEntering: false
+        _waitingRun: true
+        desc: ''
+        isInContainer: true
+        selected: false
+        title: ''
+        type: loop-start
+      id: 1769644344536_1_2vcsg3zs6start
+      parentId: 1769644344536_1_2vcsg3zs6
+      position:
+        x: 24
+        y: 68
+      type: custom-loop-start
+      zIndex: 1002
+    - data:
+        _connectedSourceHandleIds:
+        - source
+        _connectedTargetHandleIds:
+        - target
+        _holdAddVariablePopup: false
+        _inParallelHovering: false
+        _isEntering: false
+        _showAddVariablePopup: true
+        _waitingRun: true
+        desc: ''
+        isInContainer: true
+        iteration_id: 1769644344536_1_2vcsg3zs6
+        provider_id: time
+        provider_name: time
+        provider_type: builtin
+        selected: false
+        title: 현재 시간
+        tool_configurations:
+          format: '%Y%m%d'
+          timezone: Asia/Seoul
+        tool_label: 현재 시간
+        tool_name: current_time
+        tool_parameters: {}
+        type: tool
+      id: 1769758983940_4_o67kzg625
+      parentId: 1769644344536_1_2vcsg3zs6
+      position:
+        x: 155.45026287257878
+        y: 146.46080852014293
+      type: custom
+      zIndex: 1005
+    - data:
+        _connectedSourceHandleIds: []
+        _connectedTargetHandleIds:
+        - target
+        _holdAddVariablePopup: false
+        _inParallelHovering: false
+        _isEntering: false
+        _showAddVariablePopup: true
+        _waitingRun: true
+        desc: ''
+        isInContainer: true
+        items:
+        - input_type: variable
+          operation: over-write
+          value:
+          - 1769760055251_10_vbrr61fzm
+          - text
+          variable_selector:
+          - 1769644344536_1_2vcsg3zs6
+          - date
+          write_mode: over-write
+        - input_type: variable
+          operation: over-write
+          value:
+          - 1769760055251_10_vbrr61fzm
+          - text
+          variable_selector:
+          - 1769644344536_1_2vcsg3zs6
+          - end_condition
+          write_mode: over-write
+        - input_type: variable
+          operation: +=
+          value:
+          - 1770007664492_1_y4ru1fc2h
+          - body
+          variable_selector:
+          - 1769644344536_1_2vcsg3zs6
+          - loophero
+          write_mode: over-write
+        iteration_id: 1769644344536_1_2vcsg3zs6
+        output_type: ''
+        selected: false
+        title: 변수 할당
+        type: assigner
+        variables: []
+        version: '2'
+      id: 1769759132284_7_f8dkf0bxq
+      parentId: 1769644344536_1_2vcsg3zs6
+      position:
+        x: 1256.5983504762883
+        y: 87.32125751172012
+      type: custom
+      zIndex: 1005
+    - data:
+        _connectedSourceHandleIds:
+        - source
+        _connectedTargetHandleIds:
+        - target
+        _holdAddVariablePopup: false
+        _inParallelHovering: false
+        _isCandidate: false
+        _isEntering: false
+        _runningStatus: none
+        _showAddVariablePopup: false
+        _waitingRun: false
+        desc: ''
+        provider_id: time
+        provider_name: time
+        provider_type: builtin
+        selected: false
+        title: 현재 시간
+        tool_configurations:
+          format: '%Y%m%d'
+          timezone: Asia/Seoul
+        tool_label: 현재 시간
+        tool_name: current_time
+        tool_parameters: {}
+        type: tool
+      id: 1769759902622_8_fe0k9uzrn
+      position:
+        x: -278.82947922739373
+        y: -359.8855551573616
+      type: custom
+      zIndex: 1005
+    - data:
+        _connectedSourceHandleIds:
+        - source
+        _connectedTargetHandleIds:
+        - target
+        _holdAddVariablePopup: false
+        _inParallelHovering: false
+        _isEntering: false
+        _showAddVariablePopup: true
+        _waitingRun: true
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        isInContainer: true
+        iteration_id: 1769644344536_1_2vcsg3zs6
+        model:
+          completion_params:
+            max_tokens: 128000
+            temperature: 0.1
+          mode: chat
+          name: gpt-5-nano
+          provider: openai
+          registered_provider_id: 175dbfd9-3d42-459e-85cd-f05eec4e9cc8
+        prompt_template:
+        - role: system
+          text: '{{#1769644344536_1_2vcsg3zs6.date#}}에서 하루를 더해서 출력해
+
+            형식은 %Y%m%d 여야 해
+
+            %Y%m%d 형식인 날짜 이외의 다른 내용은 출력하지마.'
+        selected: false
+        title: 날짜형식변환
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      id: 1769760055251_10_vbrr61fzm
+      parentId: 1769644344536_1_2vcsg3zs6
+      position:
+        x: 553.1987978084126
+        y: 50.37929555925825
+      type: custom
+      zIndex: 1005
+    - data:
+        _connectedSourceHandleIds:
+        - source
+        _connectedTargetHandleIds:
+        - target
+        _holdAddVariablePopup: false
+        _inParallelHovering: false
+        _isEntering: false
+        _showAddVariablePopup: true
+        _waitingRun: true
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data: ''
+          type: none
+        desc: ''
+        headers: ''
+        isInContainer: true
+        iteration_id: 1769644344536_1_2vcsg3zs6
+        method: get
+        params: 'serviceKey:{{#env.service_key#}}
+
+          pageNo:1
+
+          numOfRows:5
+
+          dataType:json
+
+          date:{{#1769760055251_10_vbrr61fzm.text#}}'
+        selected: false
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: API 요청 2
+        type: http-request
+        url: https://apis.data.go.kr/B552115/SmpWithForecastDemand/getSmpWithForecastDemand
+        variables: []
+      id: 1770007664492_1_y4ru1fc2h
+      parentId: 1769644344536_1_2vcsg3zs6
+      position:
+        x: 898.614354719195
+        y: 136.77513985035088
+      type: custom
+      zIndex: 1005
+    viewport:
+      x: 452.5693555497975
+      y: 352.2922281302219
+      zoom: 0.5282786545461602

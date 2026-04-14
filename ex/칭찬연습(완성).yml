@@ -1,0 +1,618 @@
+app:
+  description: ' 칭찬연습'
+  icon: ''
+  icon_background: ''
+  memory_config: null
+  mode: workflow
+  name: 칭찬연습
+  use_icon_as_answer_icon: false
+kind: app
+version: 0.1.5
+workflow:
+  conversation_variables: []
+  environment_variables:
+  - description: ''
+    id: 8812a0e7-f695-49f3-8deb-f144f7764144
+    name: pw
+    selector:
+    - env
+    - pw
+    value: ''
+    value_type: secret
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      image:
+        enabled: false
+      number_limits: 10
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        sourceType: document-extractor
+        targetType: parameter-extractor
+      id: 1773388511942_30_2xcag5h5r-source-1773388992285_33_vuwavw3ys-target
+      selected: false
+      source: 1773388511942_30_2xcag5h5r
+      sourceHandle: source
+      target: 1773388992285_33_vuwavw3ys
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: iteration-start
+        targetType: llm
+      id: 1773388794464_32_egkogztqjstart-source-1773389245617_35_o6wbze8zj-target
+      selected: false
+      source: 1773388794464_32_egkogztqjstart
+      sourceHandle: source
+      target: 1773389245617_35_o6wbze8zj
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        sourceType: iteration
+        targetType: end
+      id: 1773388794464_32_egkogztqj-source-1773389594328_40_ikbkcg8l9-target
+      selected: false
+      source: 1773388794464_32_egkogztqj
+      sourceHandle: source
+      target: 1773389594328_40_ikbkcg8l9
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: llm
+        targetType: llm
+      id: 1773389245617_35_o6wbze8zj-source-1775183209037_4_hmbsgs8ko-target
+      selected: false
+      source: 1773389245617_35_o6wbze8zj
+      sourceHandle: source
+      target: 1775183209037_4_hmbsgs8ko
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        sourceType: parameter-extractor
+        targetType: iteration
+      id: 1773388992285_33_vuwavw3ys-source-1773388794464_32_egkogztqj-target
+      selected: false
+      source: 1773388992285_33_vuwavw3ys
+      sourceHandle: source
+      target: 1773388794464_32_egkogztqj
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: start
+        targetType: document-extractor
+      id: 1773376856017-source-1773388511942_30_2xcag5h5r-target
+      selected: false
+      source: '1773376856017'
+      sourceHandle: source
+      target: 1773388511942_30_2xcag5h5r
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        _connectedSourceHandleIds:
+        - source
+        - source
+        _connectedTargetHandleIds: []
+        _dimmed: false
+        _inParallelHovering: false
+        _isEntering: false
+        _runningStatus: succeeded
+        _waitingRun: false
+        desc: ''
+        selected: false
+        title: 시작
+        type: start
+        variables:
+        - allowed_file_extensions: []
+          allowed_file_types:
+          - image
+          - audio
+          - video
+          - document
+          allowed_file_upload_methods:
+          - local_file
+          - remote_url
+          label: 엑셀을 첨부해주세요.
+          max_length: 10
+          options: []
+          required: true
+          type: file-list
+          variable: excel
+      id: '1773376856017'
+      position:
+        x: -160.1272019080774
+        y: 469.0204655723851
+      selected: false
+      type: custom
+      zIndex: 1005
+    - data:
+        _connectedSourceHandleIds:
+        - source
+        _connectedTargetHandleIds:
+        - target
+        _dimmed: false
+        _holdAddVariablePopup: false
+        _inParallelHovering: false
+        _isCandidate: false
+        _isEntering: false
+        _runningStatus: succeeded
+        _showAddVariablePopup: false
+        _waitingRun: false
+        desc: ''
+        is_array_file: true
+        preserve_original_format: false
+        selected: false
+        title: 문서 추출기
+        type: document-extractor
+        variable_selector:
+        - '1773376856017'
+        - excel
+      id: 1773388511942_30_2xcag5h5r
+      position:
+        x: 233.30956769092109
+        y: 377.04329123347725
+      selected: false
+      type: custom
+      zIndex: 1005
+    - data:
+        _children:
+        - 1773388794464_32_egkogztqjstart
+        - 1773389245617_35_o6wbze8zj
+        - 1773389575812_39_6r5czpz8v
+        - 1773390615335_2_oerrvtn0w
+        - 1775178211037_1_1dojp2i6m
+        - 1775183209037_4_hmbsgs8ko
+        _connectedSourceHandleIds:
+        - source
+        _connectedTargetHandleIds:
+        - target
+        _dimmed: false
+        _holdAddVariablePopup: false
+        _inParallelHovering: false
+        _isCandidate: false
+        _isEntering: false
+        _isShowTips: false
+        _iterationIndex: 9
+        _iterationLength: 8
+        _runningStatus: succeeded
+        _showAddVariablePopup: false
+        _waitingRun: false
+        desc: ''
+        error_handle_mode: terminated
+        height: 542
+        is_parallel: true
+        iterator_selector:
+        - 1773388992285_33_vuwavw3ys
+        - name
+        output_selector:
+        - 1773389245617_35_o6wbze8zj
+        - text
+        output_type: array[string]
+        parallel_nums: 10
+        selected: false
+        start_node_id: 1773388794464_32_egkogztqjstart
+        title: 반복
+        type: iteration
+        width: 1359.3959195081525
+      id: 1773388794464_32_egkogztqj
+      position:
+        x: 573.1105536857092
+        y: 365.390158215458
+      selected: false
+      type: custom
+      zIndex: 1
+    - data:
+        _connectedSourceHandleIds:
+        - source
+        _connectedTargetHandleIds: []
+        _dimmed: false
+        _inParallelHovering: false
+        _isEntering: false
+        _waitingRun: false
+        desc: ''
+        isInContainer: true
+        iteration_id: 1773388794464_32_egkogztqj
+        selected: false
+        title: ''
+        type: iteration-start
+      id: 1773388794464_32_egkogztqjstart
+      parentId: 1773388794464_32_egkogztqj
+      position:
+        x: 24
+        y: 68
+      selected: false
+      type: custom-iteration-start
+      zIndex: 1002
+    - data:
+        _connectedSourceHandleIds:
+        - source
+        _connectedTargetHandleIds:
+        - target
+        _dimmed: false
+        _holdAddVariablePopup: false
+        _inParallelHovering: false
+        _isCandidate: false
+        _isEntering: false
+        _runningStatus: succeeded
+        _showAddVariablePopup: false
+        _waitingRun: false
+        desc: ''
+        instruction: '아래 엑셀 파일은 사내 칭찬 설문 raw data 입니다. 이 데이터를 칭찬받은 사람 기준으로 재구성해서 JSON
+          으로 출력해주세요.
+
+          데이터 구조는 각 행이 한 응답자가 최대 3명에게 칭찬을 남긴 구조입니다. 응답자 정보는 A열 응답시간, B열 칭찬한 사람 이름,
+          C열 기업 단체명, D열 부서, E열 이메일에 있습니다. 칭찬 세트는 최대 3개이며 첫 번째 칭찬은 G열 칭찬받는 사람 이름, H열
+          수신이메일, I열 칭찬유형, K열 정성 언제 어떤 상황, L열 정성 칭찬내용, N열 공감 칭찬내용, P열 추가여부 입니다. 두 번째
+          칭찬은 R열 이름, S열 수신이메일, T열 칭찬유형, V열 정성 상황, W열 정성 내용, Y열 공감 내용, AA열 추가여부 입니다.
+          세 번째 칭찬은 AC열 이름, AD열 수신이메일, AE열 칭찬유형, AG열 정성 상황, AH열 정성 내용, AJ열 공감 내용 입니다.
+          두 번째 칭찬은 P열이 네 한 명 더 남길게요 일 때만 존재하고, 세 번째 칭찬은 AA열이 동일할 때만 존재합니다. 칭찬 유형은
+          해당 열에 정성 한 스푼이 포함되면 정성형, 공감 한 스푼이 포함되면 공감형으로 판별합니다.
+
+          전처리 규칙은 칭찬받은 사람 이름인 G열, R열, AC열에서 슬래시, 괄호, 부서명, 매니저 등 이름 외 텍스트를 모두 제거하고
+          앞 세 글자만 남깁니다. 단 은진은 두 글자 그대로 유지합니다. 예를 들어 이승엽 인사 문화팀 은 이승엽 으로 정제합니다.
+
+          핵심 변환 로직은 세 단계입니다. 첫째로 raw 1행을 칭찬 단위 레코드로 분리합니다. 한 응답자가 3명에게 칭찬했다면 3개의 레코드로
+          펼칩니다. 각 레코드는 응답시간, 칭찬받은 사람 정제된 이름, 수신이메일, 칭찬한 사람, 기업 단체명, 부서, 이메일, 칭찬유형,
+          언제 상황, 칭찬내용, 추가여부 필드를 가집니다. 둘째로 정제된 칭찬받은 사람 이름을 기준으로 레코드들을 그룹화합니다. 이름이 같은
+          레코드들은 같은 사람으로 판단해서 하나의 객체로 묶습니다. 셋째로 묶인 객체 안에서 칭찬한 사람들은 번호를 붙여 가로로 나열합니다.
+          첫 번째 칭찬한 사람 정보는 칭찬한 사람1, 기업 단체명1, 부서1, 이메일1, 칭찬 유형1, 칭찬 내용1, 추가 여부1 로, 두
+          번째는 숫자만 2로, 세 번째는 3으로 붙입니다. 정성형인 경우 언제 상황 필드도 번호를 붙여 함께 포함합니다.
+
+          출력 형식은 아래 JSON 배열 구조를 따릅니다.
+
+          [{"응답시간": "2026.03.05 09:13", "칭찬받은_사람": "이승엽", "수신이메일": "smj1208@gsbchp.com",
+          "칭찬한_사람1": "조천일", "기업_단체명1": "GS E&R", "부서1": "회계팀", "이메일1": "chunil@gsenr.com",
+          "칭찬_유형1": "공감 한 스푼", "칭찬_내용1": "책임감 있게 마무리해 줬어요.", "추가_여부1": "네, 한 명 더 남길게요",
+          "칭찬한_사람2": "조천일", "기업_단체명2": "GS E&R", "부서2": "회계팀", "이메일2": "chunil@gsenr.com",
+          "칭찬_유형2": "공감 한 스푼", "칭찬_내용2": "책임감 있게 마무리해 줬어요.", "추가_여부2": "네, 한 명 더 남길게요"}]
+
+          칭찬한 사람이 1명이면 1번만, 2명이면 1번과 2번, 3명이면 1번부터 3번까지 필드를 출력합니다. 응답시간은 칭찬받은 사람에게
+          온 칭찬 중 가장 이른 응답시간을 기준으로 합니다. 수신이메일이 여러 개인 경우 첫 번째로 등장한 값을 사용합니다.'
+        model:
+          completion_params:
+            max_tokens: 64000
+            temperature: 0.7
+          mode: chat
+          name: us.anthropic.claude-sonnet-4-6
+          provider: bedrock
+          registered_provider_id: df0e558d-e8b6-4b22-b051-45102878e388
+        parameters:
+        - description: name
+          name: name
+          options: []
+          required: true
+          type: array[object]
+        query:
+        - 1773388511942_30_2xcag5h5r
+        - text
+        reasoning_mode: prompt
+        selected: false
+        title: 변수 추출
+        type: parameter-extractor
+        variables: []
+        vision:
+          enabled: false
+      id: 1773388992285_33_vuwavw3ys
+      position:
+        x: 283.5568209836503
+        y: 611.9381005824335
+      selected: false
+      type: custom
+      zIndex: 1005
+    - data:
+        _connectedSourceHandleIds:
+        - source
+        _connectedTargetHandleIds:
+        - target
+        _dimmed: false
+        _holdAddVariablePopup: false
+        _inParallelHovering: false
+        _isEntering: false
+        _showAddVariablePopup: true
+        _waitingRun: false
+        context:
+          enabled: true
+          variable_selector: []
+        desc: ''
+        isInContainer: true
+        iteration_id: 1773388794464_32_egkogztqj
+        model:
+          completion_params:
+            max_tokens: 64000
+            temperature: 0.7
+          mode: chat
+          name: us.anthropic.claude-haiku-4-5-20251001-v1:0
+          provider: bedrock
+          registered_provider_id: df0e558d-e8b6-4b22-b051-45102878e388
+        prompt_template:
+        - role: system
+          text: '입력된 JSON을 이메일용 XHTML HTML로 변환하라.
+
+
+            규칙:
+
+            - [응답] 같은 내용 출력 금지하고 HTML만 출력
+
+            - 마크다운/설명 금지
+
+            - 예시 HTML의 table 구조와 style을 최대한 유지
+
+            - title, To, 건수, 분기, 칭찬 유형, 칭찬 내용을 입력값으로 치환
+
+            - `응답시간`에서 연도/분기를 계산
+
+            - `칭찬받은_사람`을 제목과 수신자명에 사용
+
+            - `칭찬_유형N`, `칭찬_내용N`을 인덱스별로 읽어 칭찬 항목 생성
+
+            - `추가_여부N`이 "아니요, 여기까지 할게요."이면 거기서 종료
+
+            - 같은 유형끼리 묶어서 섹션 생성
+
+            - 유형 라벨 매핑:
+
+            공감형 -> 👍 공감 한 스푼
+
+            정성형 -> 🌱 정성 한 스푼
+
+            - 누락값은 빈 문자열 처리
+
+
+            [HTML 템플릿 규칙]
+
+            - 아래 구조와 스타일을 최대한 동일하게 유지한다.
+
+            - 단, 이름, 분기, 건수, 칭찬 유형 섹션, 칭찬 내용은 입력값에 맞게 동적으로 바꾼다.'
+        - role: user
+          text: '{{#1773388794464_32_egkogztqj.item#}}'
+        - role: assistant
+          text: '[출력 템플릿 예시]
+
+
+            <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html
+            xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type"
+            content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width,
+            initial-scale=1.0"><title>황광호님의 칭찬 카드</title><style type="text/css">body{margin:0;padding:0;background-color:#ffffff;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}table{border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;}</style></head><body
+            style="margin:0;padding:0;background-color:#ffffff;"><table width="100%"
+            cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;background-color:#ffffff;"><tr><td
+            align="left" style="padding:0;"><table width="480" cellpadding="0" cellspacing="0"
+            border="0" style="border-collapse:collapse;max-width:480px;width:100%;background-color:#ffffff;border-radius:20px;border:1px
+            solid #F9D0E7;"><tr><td height="6" style="height:6px;font-size:0;line-height:0;mso-line-height-rule:exactly;background-color:#F472B6;border-radius:20px
+            20px 0 0;">&nbsp;</td></tr><tr><td style="padding:32px 36px 28px;"><table
+            cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;margin:0
+            0 22px 0;"><tr><td style="background-color:#FDF2F8;border-radius:20px;padding:5px
+            14px;font-size:13px;font-weight:700;font-family:''맑은 고딕'',''Malgun Gothic'',Arial,sans-serif;color:#BE185D;letter-spacing:0.5px;white-space:nowrap;">&#129380;
+            2026년 1분기 칭찬 한 스푼</td></tr></table><table width="100%" cellpadding="0"
+            cellspacing="0" border="0" style="border-collapse:collapse;margin:0 0
+            18px 0;"><tr><td style="font-size:14px;font-family:''맑은 고딕'',''Malgun
+            Gothic'',Arial,sans-serif;color:#6B7280;">1분기 동안 동료들에게 받은 칭찬을 전해드립니다 &#128578;</td></tr></table><table
+            width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;margin:0
+            0 2px 0;"><tr><td style="font-size:16px;font-family:''맑은 고딕'',''Malgun
+            Gothic'',Arial,sans-serif;color:#9CA3AF;font-weight:500;">To.</td></tr></table><table
+            width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;margin:0
+            0 14px 0;"><tr><td style="font-size:32px;font-weight:900;font-family:''맑은
+            고딕'',''Malgun Gothic'',Arial,sans-serif;color:#1F2937;line-height:1.1;">황광호</td></tr></table><table
+            cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;margin:0
+            0 20px 0;"><tr><td style="font-size:40px;font-weight:900;font-family:''맑은
+            고딕'',''Malgun Gothic'',Arial,sans-serif;color:#F472B6;line-height:1;padding-right:10px;">2건</td><td
+            style="font-size:15px;font-family:''맑은 고딕'',''Malgun Gothic'',Arial,sans-serif;color:#6B7280;line-height:1.5;">의
+            칭찬이<br>전달됐어요 &#127881;</td></tr></table><table width="100%" cellpadding="0"
+            cellspacing="0" border="0" style="border-collapse:collapse;margin:0 0
+            14px 0;"><tr><td height="1" style="height:1px;font-size:0;line-height:0;background-color:#F9D0E7;">&nbsp;</td></tr></table><table
+            width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;margin:0
+            0 10px 0;"><tr><td style="font-size:13px;font-weight:700;font-family:''맑은
+            고딕'',''Malgun Gothic'',Arial,sans-serif;color:#9CA3AF;letter-spacing:0.5px;">&#128077;
+            공감 한 스푼</td></tr></table><table cellpadding="0" cellspacing="0" border="0"
+            style="border-collapse:collapse;margin:0 0 8px 0;"><tr><td style="background-color:#FDF2F8;border:1px
+            solid #F9D0E7;border-radius:20px;padding:6px 14px;font-size:14px;font-weight:600;font-family:''맑은
+            고딕'',''Malgun Gothic'',Arial,sans-serif;color:#BE185D;white-space:nowrap;">분위기를
+            좋게 만들어 줬어요.&nbsp;</td></tr></table><table cellpadding="0" cellspacing="0"
+            border="0" style="border-collapse:collapse;margin:0 0 8px 0;"><tr><td
+            style="background-color:#FDF2F8;border:1px solid #F9D0E7;border-radius:20px;padding:6px
+            14px;font-size:14px;font-weight:600;font-family:''맑은 고딕'',''Malgun Gothic'',Arial,sans-serif;color:#BE185D;white-space:nowrap;">협업에
+            힘이 되어 줬어요.&nbsp;</td></tr></table><table width="100%" cellpadding="0"
+            cellspacing="0" border="0" style="border-collapse:collapse;border-top:1px
+            solid #F9D0E7;margin-top:20px;"><tr><td align="center" style="padding-top:16px;font-size:16px;font-family:''맑은
+            고딕'',''Malgun Gothic'',Arial,sans-serif;color:#9CA3AF;"><strong style="color:#BE185D;">동료들이
+            함께 일하며 느낀 감사함을 전합니다 &#128157;</strong></td></tr></table></td></tr></table></td></tr></table></body></html>'
+        selected: false
+        title: LLM
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      id: 1773389245617_35_o6wbze8zj
+      parentId: 1773388794464_32_egkogztqj
+      position:
+        x: 307.5023614780605
+        y: 84.31079894952637
+      selected: false
+      type: custom
+      zIndex: 1005
+    - data:
+        _connectedSourceHandleIds: []
+        _connectedTargetHandleIds:
+        - target
+        _dimmed: false
+        _holdAddVariablePopup: false
+        _inParallelHovering: false
+        _isCandidate: false
+        _isEntering: false
+        _runningStatus: succeeded
+        _showAddVariablePopup: false
+        _waitingRun: false
+        desc: ''
+        outputs:
+        - value_selector:
+          - 1773388794464_32_egkogztqj
+          - output
+          variable: ㅇㅇ
+        selected: false
+        title: 종료
+        type: end
+      id: 1773389594328_40_ikbkcg8l9
+      position:
+        x: 2275.6264988116473
+        y: 521.8386645049229
+      selected: false
+      type: custom
+      zIndex: 1005
+    - data:
+        _connectedSourceHandleIds: []
+        _connectedTargetHandleIds: []
+        _dimmed: false
+        _holdAddVariablePopup: false
+        _inParallelHovering: false
+        _isEntering: false
+        _showAddVariablePopup: true
+        _waitingRun: false
+        desc: ''
+        isInContainer: true
+        iteration_id: 1773388794464_32_egkogztqj
+        provider_id: email
+        provider_name: email
+        provider_type: builtin
+        selected: false
+        title: 이메일 보내기
+        tool_configurations: {}
+        tool_label: 이메일 보내기
+        tool_name: send_mail
+        tool_parameters:
+          attachment_url:
+            type: mixed
+          email_content:
+            type: mixed
+            value: '{{#1773389245617_35_o6wbze8zj.text#}}'
+          send_to:
+            type: mixed
+            value: daeun4041@gsenr.com
+          subject:
+            type: mixed
+            value: 칭찬받아라
+        type: tool
+      id: 1773390615335_2_oerrvtn0w
+      parentId: 1773388794464_32_egkogztqj
+      position:
+        x: 609.3959195081525
+        y: 310.70324943978824
+      selected: false
+      type: custom
+      zIndex: 1005
+    - data:
+        _connectedSourceHandleIds: []
+        _connectedTargetHandleIds: []
+        _dimmed: false
+        _holdAddVariablePopup: false
+        _inParallelHovering: false
+        _isEntering: false
+        _showAddVariablePopup: true
+        _waitingRun: false
+        desc: ''
+        isInContainer: true
+        iteration_id: 1773388794464_32_egkogztqj
+        provider_id: e5f93a27-bc1b-40e3-8dde-fb1cc3e6a9d5
+        provider_name: 네이버 웍스 이메일 송부
+        provider_type: workflow
+        selected: false
+        title: 네이버 웍스 이메일 송부 2
+        tool_configurations: {}
+        tool_label: 네이버 웍스 이메일 송부
+        tool_name: naver_works
+        tool_parameters:
+          body:
+            type: mixed
+            value: '{{#1773389245617_35_o6wbze8zj.text#}}'
+          recipient_email:
+            type: mixed
+            value: '12'
+          sender_email:
+            type: mixed
+            value: daeun4041@gsenr.com
+          sender_password:
+            type: mixed
+            value: '{{#env.pw#}}'
+          subject:
+            type: mixed
+            value: 칭찬
+        type: tool
+      id: 1775178211037_1_1dojp2i6m
+      parentId: 1773388794464_32_egkogztqj
+      position:
+        x: 1019.3959195081525
+        y: 310.70324943978824
+      selected: false
+      type: custom
+      zIndex: 1002
+    - data:
+        _connectedSourceHandleIds: []
+        _connectedTargetHandleIds:
+        - target
+        _holdAddVariablePopup: false
+        _inParallelHovering: false
+        _isEntering: false
+        _showAddVariablePopup: true
+        _waitingRun: false
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        isInContainer: true
+        iteration_id: 1773388794464_32_egkogztqj
+        model:
+          completion_params:
+            max_tokens: 64000
+            temperature: 0.7
+          mode: chat
+          name: us.anthropic.claude-haiku-4-5-20251001-v1:0
+          provider: bedrock
+          registered_provider_id: df0e558d-e8b6-4b22-b051-45102878e388
+        prompt_template:
+        - role: system
+          text: "{{#1773388794464_32_egkogztqj.item#}} \n수신자 이메일 추출한다.\n답변은 이메일 이외의\
+            \ 내용은 적지 않는다."
+        - role: user
+          text: 시스템 프롬프트를 수행한다
+        selected: false
+        title: LLM 2
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      id: 1775183209037_4_hmbsgs8ko
+      parentId: 1773388794464_32_egkogztqj
+      position:
+        x: 717.5023614780605
+        y: 84.31079894952637
+      selected: false
+      type: custom
+      zIndex: 1002
+    viewport:
+      x: 236.26356257348652
+      y: -52.41719806991216
+      zoom: 0.5744451078307676
